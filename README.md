@@ -1,6 +1,23 @@
-# 心流花园 - MindFlower v0.0.1
+# 心流花园 - MindFlower v0.0.2
 
 > 专注时光，心流相伴 🌸
+
+[![Build Android APK](https://github.com/ablcy/mindflower/actions/workflows/build-android.yml/badge.svg)](https://github.com/ablcy/mindflower/actions)
+[![GitHub Pages](https://img.shields.io/github/deployments/ablcy/mindflower/github-pages?label=GitHub%20Pages)](https://ablcy.github.io/mindflower/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+[![GitHub release (latest by date)](https://img.shields.io/github/v/release/ablcy/mindflower?label=最新版本)](https://github.com/ablcy/mindflower/releases)
+
+### 📱 一键下载安卓 APP
+
+**方式一：GitHub Releases（推荐，最稳定）**
+👉 **[点击下载最新 APK（免费）](https://github.com/ablcy/mindflower/releases/latest)**
+
+**方式二：GitHub Actions 云构建（自动最新版）**
+1. 进入 [Actions 构建页面](https://github.com/ablcy/mindflower/actions)
+2. 点击最新的 "Build Android APK" 工作流（绿色勾 ✅ 表示成功）
+3. 在页面底部 **Artifacts** 区域点击 **`心流花园-DEBUG.APK`** 下载
+
+> ⚠️ **安装提示**：安卓手机需开启「允许安装未知来源应用」才能安装 APK 文件。
 
 ## 📱 项目简介
 

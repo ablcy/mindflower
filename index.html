@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MindGarden - 专注花园</title>
+    <title>心流花园 - 专注时光，静待花开</title>
     <style>
         :root {
             --bg-primary: #f5f0e8;
@@ -62,15 +62,17 @@
         }
 
         .header h1 {
-            font-size: 28px;
+            font-size: 26px;
             color: var(--accent);
-            letter-spacing: 4px;
-            margin-bottom: 5px;
+            letter-spacing: 6px;
+            margin-bottom: 8px;
+            font-weight: 300;
         }
 
         .header p {
             font-size: 12px;
             color: var(--text-secondary);
+            letter-spacing: 2px;
         }
 
         .nav {
@@ -869,7 +871,7 @@
 <body>
     <div class="app">
         <header class="header">
-            <h1>MindGarden</h1>
+            <h1>心流花园</h1>
             <p>专注时光，静待花开</p>
         </header>
 
@@ -1861,7 +1863,7 @@
             document.getElementById('bloom-modal').classList.add('active');
 
             if (Notification.permission === 'granted') {
-                new Notification('MindGarden', {
+                new Notification('心流花园', {
                     body: `${flower.name} 开花啦！`,
                     icon: '🌸'
                 });
@@ -1898,7 +1900,7 @@
 
         function shareToWechat() {
             const flower = FLOWERS.find(f => f.id === state.selectedFlower);
-            const text = `我在 MindGarden 完成了 ${state.focusDuration} 分钟的专注，培养出了 ${flower.name}！🌸`;
+            const text = `我在心流花园完成了 ${state.focusDuration} 分钟的专注，培养出了 ${flower.name}！🌸`;
             if (navigator.clipboard) {
                 navigator.clipboard.writeText(text);
                 showToast('已复制到剪贴板');
@@ -1907,7 +1909,7 @@
 
         function shareToTwitter() {
             const flower = FLOWERS.find(f => f.id === state.selectedFlower);
-            const text = `I completed ${state.focusDuration} minutes of focused time on MindGarden and grew a beautiful ${flower.name}! 🌸 #MindGarden #FocusTime`;
+            const text = `I completed ${state.focusDuration} minutes of focused time on 心流花园 and grew a beautiful ${flower.name}! 🌸 #心流花园 #FocusTime`;
             window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`, '_blank');
         }
 

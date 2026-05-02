@@ -290,48 +290,122 @@
             color: var(--text-secondary);
         }
 
+        .garden-container {
+            background: linear-gradient(180deg, #e8dcc8 0%, #d4c4a8 100%);
+            border-radius: 20px;
+            padding: 30px 20px;
+            margin: 20px 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .garden-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image:
+                radial-gradient(circle at 20% 30%, rgba(139, 90, 43, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 70% 60%, rgba(139, 90, 43, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 50% 80%, rgba(139, 90, 43, 0.12) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
         .garden-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 15px;
-            margin-top: 20px;
+            margin-top: 10px;
+            position: relative;
+            z-index: 1;
         }
 
         .garden-slot {
             aspect-ratio: 1;
-            background: var(--bg-secondary);
-            border-radius: 15px;
+            background: linear-gradient(145deg, #a87d4d 0%, #8d643a 100%);
+            border-radius: 12px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
-            border: 2px dashed var(--shadow);
-            transition: all 0.3s;
+            justify-content: flex-end;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: visible;
+            box-shadow:
+                0 4px 8px rgba(0,0,0,0.15),
+                inset 0 2px 4px rgba(255,255,255,0.1),
+                inset 0 -2px 4px rgba(0,0,0,0.1);
         }
 
-        .garden-slot.filled {
-            border: 2px solid var(--accent-light);
-            background: linear-gradient(135deg, var(--bg-secondary), var(--paper));
+        .garden-slot::before {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 70%;
+            height: 10px;
+            background: rgba(0,0,0,0.2);
+            border-radius: 50%;
+            filter: blur(3px);
         }
+
+        .garden-slot::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 30%;
+            background: linear-gradient(180deg, rgba(156, 117, 73, 0.3) 0%, transparent 100%);
+            border-radius: 12px 12px 0 0;
+        }
+
+        .garden-slot:hover {
+            transform: translateY(-3px);
+            box-shadow:
+                0 8px 16px rgba(0,0,0,0.2),
+                inset 0 2px 4px rgba(255,255,255,0.1),
+                inset 0 -2px 4px rgba(0,0,0,0.1);
+        }
+
+        .garden-slot:nth-child(1) { margin-top: 0; }
+        .garden-slot:nth-child(2) { margin-top: 20px; }
+        .garden-slot:nth-child(3) { margin-top: 5px; }
+        .garden-slot:nth-child(4) { margin-top: -10px; }
+        .garden-slot:nth-child(5) { margin-top: 15px; }
+        .garden-slot:nth-child(6) { margin-top: 0; }
+        .garden-slot:nth-child(7) { margin-top: 10px; }
+        .garden-slot:nth-child(8) { margin-top: -5px; }
+        .garden-slot:nth-child(9) { margin-top: 20px; }
 
         .garden-slot svg {
-            width: 50px;
-            height: 50px;
-            opacity: 0.3;
-        }
-
-        .garden-slot.filled svg {
-            opacity: 1;
+            width: 70%;
+            height: 70%;
+            position: absolute;
+            bottom: 20%;
+            z-index: 2;
+            filter: drop-shadow(0 3px 6px rgba(0,0,0,0.2));
         }
 
         .garden-slot span {
-            font-size: 10px;
-            color: var(--text-secondary);
-            margin-top: 5px;
+            font-size: 11px;
+            color: #e8dcc8;
+            margin-bottom: 8px;
+            font-weight: 500;
+            z-index: 3;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.3);
         }
 
-        .garden-slot.filled span {
-            color: var(--accent);
+        .garden-slot.empty svg {
+            opacity: 0.2;
+            filter: grayscale(1);
+        }
+
+        .garden-slot.empty span {
+            color: rgba(232, 220, 200, 0.4);
         }
 
         .stats-card {
@@ -1047,84 +1121,340 @@
 
         const FLOWER_SVGS = {
             sunflower: {
-                seed: `<svg viewBox="0 0 100 100"><ellipse cx="50" cy="70" rx="8" ry="12" fill="#5d4037"/><ellipse cx="50" cy="60" rx="6" ry="8" fill="#6d4c41"/></svg>`,
-                sprout: `<svg viewBox="0 0 100 100"><path d="M50 80 Q50 60 50 50" stroke="#4caf50" stroke-width="3" fill="none"/><ellipse cx="45" cy="50" rx="8" ry="5" fill="#66bb6a" transform="rotate(-30 45 50)"/><ellipse cx="55" cy="50" rx="8" ry="5" fill="#66bb6a" transform="rotate(30 55 50)"/></svg>`,
-                leaf: `<svg viewBox="0 0 100 100"><path d="M50 85 Q50 50 50 35" stroke="#4caf50" stroke-width="4" fill="none"/><ellipse cx="35" cy="55" rx="15" ry="8" fill="#66bb6a" transform="rotate(-40 35 55)"/><ellipse cx="65" cy="55" rx="15" ry="8" fill="#66bb6a" transform="rotate(40 65 55)"/><ellipse cx="40" cy="40" rx="12" ry="6" fill="#81c784" transform="rotate(-30 40 40)"/><ellipse cx="60" cy="40" rx="12" ry="6" fill="#81c784" transform="rotate(30 60 40)"/></svg>`,
-                bud: `<svg viewBox="0 0 100 100"><path d="M50 90 Q50 50 50 30" stroke="#4caf50" stroke-width="5" fill="none"/><ellipse cx="30" cy="60" rx="18" ry="10" fill="#66bb6a" transform="rotate(-45 30 60)"/><ellipse cx="70" cy="60" rx="18" ry="10" fill="#66bb6a" transform="rotate(45 70 60)"/><ellipse cx="35" cy="40" rx="14" ry="8" fill="#81c784" transform="rotate(-35 35 40)"/><ellipse cx="65" cy="40" rx="14" ry="8" fill="#81c784" transform="rotate(35 65 40)"/><ellipse cx="50" cy="20" rx="12" ry="15" fill="#ffd54f"/></svg>`,
-                bloom: `<svg viewBox="0 0 100 100"><path d="M50 95 Q50 50 50 35" stroke="#4caf50" stroke-width="5" fill="none"/><g transform="translate(50,25)"><ellipse rx="12" ry="18" fill="#ffc107" transform="rotate(0)"/><ellipse rx="12" ry="18" fill="#ffc107" transform="rotate(45)"/><ellipse rx="12" ry="18" fill="#ffc107" transform="rotate(90)"/><ellipse rx="12" ry="18" fill="#ffc107" transform="rotate(135)"/></g><circle cx="50" cy="25" r="10" fill="#5d4037"/><ellipse cx="30" cy="55" rx="18" ry="10" fill="#66bb6a" transform="rotate(-45 30 55)"/><ellipse cx="70" cy="55" rx="18" ry="10" fill="#66bb6a" transform="rotate(45 70 55)"/></svg>`,
-                flourish: `<svg viewBox="0 0 100 100"><path d="M50 95 Q50 50 50 30" stroke="#2e7d32" stroke-width="6" fill="none"/><g transform="translate(50,22)"><ellipse rx="14" ry="20" fill="#ffca28" transform="rotate(0)"/><ellipse rx="14" ry="20" fill="#ffca28" transform="rotate(45)"/><ellipse rx="14" ry="20" fill="#ffca28" transform="rotate(90)"/><ellipse rx="14" ry="20" fill="#ffca28" transform="rotate(135)"/></g><circle cx="50" cy="22" r="12" fill="#4e342e"/><ellipse cx="25" cy="50" rx="20" ry="12" fill="#43a047" transform="rotate(-50 25 50)"/><ellipse cx="75" cy="50" rx="20" ry="12" fill="#43a047" transform="rotate(50 75 50)"/><ellipse cx="30" cy="35" rx="15" ry="8" fill="#66bb6a" transform="rotate(-40 30 35)"/><ellipse cx="70" cy="35" rx="15" ry="8" fill="#66bb6a" transform="rotate(40 70 35)"/></svg>`
+                seed: `<svg viewBox="0 0 100 100">
+                    <defs>
+                        <radialGradient id="sunfd-seed" cx="40%" cy="30%">
+                            <stop offset="0%" stop-color="#a67c52"/>
+                            <stop offset="100%" stop-color="#6b4423"/>
+                        </radialGradient>
+                    </defs>
+                    <ellipse cx="50" cy="72" rx="12" ry="16" fill="url(#sunfd-seed)"/>
+                    <ellipse cx="46" cy="65" rx="4" ry="6" fill="rgba(255,255,255,0.25)" transform="rotate(-25 46 65)"/>
+                    <ellipse cx="54" cy="75" rx="3" ry="4" fill="rgba(0,0,0,0.15)"/>
+                </svg>`,
+                sprout: `<svg viewBox="0 0 100 100">
+                    <defs>
+                        <linearGradient id="sunfd-stem1" x1="0%" y1="100%" x2="0%" y2="0%">
+                            <stop offset="0%" stop-color="#2d5a27"/>
+                            <stop offset="100%" stop-color="#4caf50"/>
+                        </linearGradient>
+                    </defs>
+                    <path d="M50 82 C52 70 50 60 50 52" stroke="url(#sunfd-stem1)" stroke-width="4" fill="none" stroke-linecap="round"/>
+                    <ellipse cx="43" cy="52" rx="11" ry="6" fill="#66bb6a" transform="rotate(-40 43 52)"/>
+                    <ellipse cx="57" cy="54" rx="10" ry="5" fill="#81c784" transform="rotate(35 57 54)"/>
+                    <path d="M43 52 Q50 48 57 54" stroke="#2e7d32" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+                </svg>`,
+                leaf: `<svg viewBox="0 0 100 100">
+                    <defs>
+                        <linearGradient id="sunfd-stem2" x1="0%" y1="100%" x2="0%" y2="0%">
+                            <stop offset="0%" stop-color="#1b4d1a"/>
+                            <stop offset="100%" stop-color="#388e3c"/>
+                        </linearGradient>
+                        <radialGradient id="sunfd-leaf1" cx="30%" cy="30%">
+                            <stop offset="0%" stop-color="#a5d6a7"/>
+                            <stop offset="70%" stop-color="#4caf50"/>
+                            <stop offset="100%" stop-color="#2e7d32"/>
+                        </radialGradient>
+                    </defs>
+                    <path d="M50 88 C50 70 50 55 50 40" stroke="url(#sunfd-stem2)" stroke-width="5" fill="none" stroke-linecap="round"/>
+                    <ellipse cx="35" cy="58" rx="20" ry="11" fill="url(#sunfd-leaf1)" transform="rotate(-48 35 58)"/>
+                    <ellipse cx="65" cy="56" rx="19" ry="10" fill="#66bb6a" transform="rotate(45 65 56)"/>
+                    <ellipse cx="40" cy="42" rx="15" ry="8" fill="#81c784" transform="rotate(-38 40 42)"/>
+                    <ellipse cx="60" cy="40" rx="14" ry="7" fill="#a5d6a7" transform="rotate(32 60 40)"/>
+                    <path d="M28 55 Q38 58 48 60" stroke="#1b5e20" stroke-width="1.2" fill="none" opacity="0.4"/>
+                    <path d="M52 58 Q62 55 72 53" stroke="#1b5e20" stroke-width="1.2" fill="none" opacity="0.4"/>
+                </svg>`,
+                bud: `<svg viewBox="0 0 100 100">
+                    <defs>
+                        <linearGradient id="sunfd-stem3" x1="0%" y1="100%" x2="0%" y2="0%">
+                            <stop offset="0%" stop-color="#1b4d1a"/>
+                            <stop offset="100%" stop-color="#388e3c"/>
+                        </linearGradient>
+                        <radialGradient id="sunfd-bud1" cx="50%" cy="30%">
+                            <stop offset="0%" stop-color="#fff8e1"/>
+                            <stop offset="50%" stop-color="#ffca28"/>
+                            <stop offset="100%" stop-color="#f57f17"/>
+                        </radialGradient>
+                    </defs>
+                    <path d="M50 92 C50 70 50 50 50 35" stroke="url(#sunfd-stem3)" stroke-width="5" fill="none" stroke-linecap="round"/>
+                    <ellipse cx="32" cy="62" rx="20" ry="11" fill="#4caf50" transform="rotate(-50 32 62)" opacity="0.9"/>
+                    <ellipse cx="68" cy="60" rx="19" ry="10" fill="#66bb6a" transform="rotate(48 68 60)" opacity="0.9"/>
+                    <ellipse cx="50" cy="22" rx="14" ry="18" fill="url(#sunfd-bud1)"/>
+                    <ellipse cx="46" cy="18" rx="5" ry="8" fill="rgba(255,255,255,0.3)" transform="rotate(-15 46 18)"/>
+                    <path d="M38 28 Q50 15 62 28" stroke="#e65100" stroke-width="1.5" fill="none" opacity="0.4"/>
+                </svg>`,
+                bloom: `<svg viewBox="0 0 100 100">
+                    <defs>
+                        <linearGradient id="sunfd-stem4" x1="0%" y1="100%" x2="0%" y2="0%">
+                            <stop offset="0%" stop-color="#1b4d1a"/>
+                            <stop offset="100%" stop-color="#388e3c"/>
+                        </linearGradient>
+                        <radialGradient id="sunfd-center1" cx="45%" cy="40%">
+                            <stop offset="0%" stop-color="#8d6e63"/>
+                            <stop offset="100%" stop-color="#3e2723"/>
+                        </radialGradient>
+                        <linearGradient id="sunfd-petal1" x1="0%" y1="100%" x2="0%" y2="0%">
+                            <stop offset="0%" stop-color="#f57f17"/>
+                            <stop offset="40%" stop-color="#ffca28"/>
+                            <stop offset="100%" stop-color="#fff59d"/>
+                        </linearGradient>
+                    </defs>
+                    <path d="M50 95 C50 72 50 52 50 38" stroke="url(#sunfd-stem4)" stroke-width="5" fill="none" stroke-linecap="round"/>
+                    <ellipse cx="30" cy="62" rx="22" ry="12" fill="#4caf50" transform="rotate(-52 30 62)" opacity="0.9"/>
+                    <ellipse cx="70" cy="60" rx="21" ry="11" fill="#66bb6a" transform="rotate(50 70 60)" opacity="0.9"/>
+                    <ellipse cx="36" cy="44" rx="17" ry="9" fill="#81c784" transform="rotate(-42 36 44)" opacity="0.85"/>
+                    <ellipse cx="64" cy="42" rx="16" ry="8" fill="#a5d6a7" transform="rotate(38 64 42)" opacity="0.85"/>
+                    <g transform="translate(50,26)">
+                        <ellipse rx="10" ry="18" fill="url(#sunfd-petal1)" transform="rotate(0)"/>
+                        <ellipse rx="10" ry="18" fill="url(#sunfd-petal1)" transform="rotate(45)"/>
+                        <ellipse rx="10" ry="18" fill="url(#sunfd-petal1)" transform="rotate(90)"/>
+                        <ellipse rx="10" ry="18" fill="url(#sunfd-petal1)" transform="rotate(135)"/>
+                        <ellipse rx="10" ry="18" fill="url(#sunfd-petal1)" transform="rotate(180)"/>
+                        <ellipse rx="10" ry="18" fill="url(#sunfd-petal1)" transform="rotate(225)"/>
+                        <ellipse rx="10" ry="18" fill="url(#sunfd-petal1)" transform="rotate(270)"/>
+                        <ellipse rx="10" ry="18" fill="url(#sunfd-petal1)" transform="rotate(315)"/>
+                    </g>
+                    <circle cx="50" cy="26" r="13" fill="url(#sunfd-center1)"/>
+                    <circle cx="45" cy="22" r="5" fill="rgba(255,255,255,0.2)"/>
+                    <g fill="#5d4037">
+                        <circle cx="44" cy="24" r="2.2"/>
+                        <circle cx="54" cy="23" r="2"/>
+                        <circle cx="48" cy="30" r="1.8"/>
+                        <circle cx="56" cy="28" r="1.9"/>
+                        <circle cx="50" cy="20" r="1.7"/>
+                    </g>
+                </svg>`,
+                flourish: `<svg viewBox="0 0 100 100">
+                    <defs>
+                        <linearGradient id="sunfd-stem5" x1="0%" y1="100%" x2="0%" y2="0%">
+                            <stop offset="0%" stop-color="#1b4d1a"/>
+                            <stop offset="100%" stop-color="#43a047"/>
+                        </linearGradient>
+                        <radialGradient id="sunfd-center2" cx="40%" cy="35%">
+                            <stop offset="0%" stop-color="#6d4c41"/>
+                            <stop offset="100%" stop-color="#3e2723"/>
+                        </radialGradient>
+                        <linearGradient id="sunfd-petal2" x1="0%" y1="100%" x2="0%" y2="0%">
+                            <stop offset="0%" stop-color="#e65100"/>
+                            <stop offset="30%" stop-color="#ffb300"/>
+                            <stop offset="70%" stop-color="#ffca28"/>
+                            <stop offset="100%" stop-color="#fff9c4"/>
+                        </linearGradient>
+                    </defs>
+                    <path d="M50 96 C50 72 50 52 50 36" stroke="url(#sunfd-stem5)" stroke-width="6" fill="none" stroke-linecap="round"/>
+                    <ellipse cx="28" cy="62" rx="24" ry="13" fill="#388e3c" transform="rotate(-55 28 62)" opacity="0.95"/>
+                    <ellipse cx="72" cy="60" rx="23" ry="12" fill="#43a047" transform="rotate(52 72 60)" opacity="0.95"/>
+                    <ellipse cx="34" cy="44" rx="18" ry="10" fill="#4caf50" transform="rotate(-45 34 44)" opacity="0.9"/>
+                    <ellipse cx="66" cy="42" rx="17" ry="9" fill="#66bb6a" transform="rotate(42 66 42)" opacity="0.9"/>
+                    <g transform="translate(50,22)">
+                        <ellipse rx="12" ry="22" fill="url(#sunfd-petal2)" transform="rotate(0)"/>
+                        <ellipse rx="12" ry="22" fill="url(#sunfd-petal2)" transform="rotate(36)"/>
+                        <ellipse rx="12" ry="22" fill="url(#sunfd-petal2)" transform="rotate(72)"/>
+                        <ellipse rx="12" ry="22" fill="url(#sunfd-petal2)" transform="rotate(108)"/>
+                        <ellipse rx="12" ry="22" fill="url(#sunfd-petal2)" transform="rotate(144)"/>
+                        <ellipse rx="12" ry="22" fill="url(#sunfd-petal2)" transform="rotate(180)"/>
+                        <ellipse rx="12" ry="22" fill="url(#sunfd-petal2)" transform="rotate(216)"/>
+                        <ellipse rx="12" ry="22" fill="url(#sunfd-petal2)" transform="rotate(252)"/>
+                        <ellipse rx="12" ry="22" fill="url(#sunfd-petal2)" transform="rotate(288)"/>
+                        <ellipse rx="12" ry="22" fill="url(#sunfd-petal2)" transform="rotate(324)"/>
+                    </g>
+                    <circle cx="50" cy="22" r="15" fill="url(#sunfd-center2)"/>
+                    <circle cx="43" cy="17" r="6" fill="rgba(255,255,200,0.25)"/>
+                    <g fill="#4e342e">
+                        <circle cx="44" cy="20" r="2.5"/>
+                        <circle cx="56" cy="19" r="2.3"/>
+                        <circle cx="48" cy="28" r="2.1"/>
+                        <circle cx="58" cy="26" r="2.2"/>
+                        <circle cx="50" cy="16" r="2"/>
+                        <circle cx="44" cy="26" r="1.9"/>
+                        <circle cx="56" cy="24" r="1.8"/>
+                    </g>
+                </svg>`
             },
             rose: {
-                seed: `<svg viewBox="0 0 100 100"><ellipse cx="50" cy="70" rx="8" ry="12" fill="#5d4037"/></svg>`,
-                sprout: `<svg viewBox="0 0 100 100"><path d="M50 80 Q50 60 50 50" stroke="#4caf50" stroke-width="3" fill="none"/><ellipse cx="45" cy="50" rx="8" ry="5" fill="#66bb6a" transform="rotate(-30 45 50)"/><ellipse cx="55" cy="50" rx="8" ry="5" fill="#66bb6a" transform="rotate(30 55 50)"/></svg>`,
-                leaf: `<svg viewBox="0 0 100 100"><path d="M50 85 Q50 50 50 35" stroke="#4caf50" stroke-width="4" fill="none"/><ellipse cx="35" cy="55" rx="15" ry="8" fill="#66bb6a" transform="rotate(-40 35 55)"/><ellipse cx="65" cy="55" rx="15" ry="8" fill="#66bb6a" transform="rotate(40 65 55)"/><ellipse cx="40" cy="40" rx="12" ry="6" fill="#81c784" transform="rotate(-30 40 40)"/><ellipse cx="60" cy="40" rx="12" ry="6" fill="#81c784" transform="rotate(30 60 40)"/></svg>`,
-                bud: `<svg viewBox="0 0 100 100"><path d="M50 90 Q50 50 50 30" stroke="#4caf50" stroke-width="5" fill="none"/><ellipse cx="30" cy="60" rx="18" ry="10" fill="#66bb6a" transform="rotate(-45 30 60)"/><ellipse cx="70" cy="60" rx="18" ry="10" fill="#66bb6a" transform="rotate(45 70 60)"/><ellipse cx="50" cy="18" rx="10" ry="15" fill="#e91e63"/><path d="M45 20 Q50 10 55 20" fill="#c2185b"/></svg>`,
-                bloom: `<svg viewBox="0 0 100 100"><path d="M50 95 Q50 50 50 35" stroke="#4caf50" stroke-width="5" fill="none"/><g transform="translate(50,25)"><ellipse rx="8" ry="15" fill="#f06292" transform="rotate(0)"/><ellipse rx="8" ry="15" fill="#f06292" transform="rotate(60)"/><ellipse rx="8" ry="15" fill="#f06292" transform="rotate(120)"/><ellipse rx="8" ry="15" fill="#f06292" transform="rotate(180)"/><ellipse rx="8" ry="15" fill="#f06292" transform="rotate(240)"/><ellipse rx="8" ry="15" fill="#f06292" transform="rotate(300)"/></g><circle cx="50" cy="25" r="8" fill="#e91e63"/><ellipse cx="30" cy="55" rx="18" ry="10" fill="#66bb6a" transform="rotate(-45 30 55)"/><ellipse cx="70" cy="55" rx="18" ry="10" fill="#66bb6a" transform="rotate(45 70 55)"/></svg>`,
-                flourish: `<svg viewBox="0 0 100 100"><path d="M50 95 Q50 50 50 30" stroke="#2e7d32" stroke-width="6" fill="none"/><g transform="translate(50,22)"><ellipse rx="10" ry="18" fill="#ec407a" transform="rotate(0)"/><ellipse rx="10" ry="18" fill="#ec407a" transform="rotate(45)"/><ellipse rx="10" ry="18" fill="#ec407a" transform="rotate(90)"/><ellipse rx="10" ry="18" fill="#ec407a" transform="rotate(135)"/><ellipse rx="10" ry="18" fill="#ec407a" transform="rotate(180)"/><ellipse rx="10" ry="18" fill="#ec407a" transform="rotate(225)"/><ellipse rx="10" ry="18" fill="#ec407a" transform="rotate(270)"/><ellipse rx="10" ry="18" fill="#ec407a" transform="rotate(315)"/></g><circle cx="50" cy="22" r="10" fill="#c2185b"/><ellipse cx="25" cy="50" rx="20" ry="12" fill="#43a047" transform="rotate(-50 25 50)"/><ellipse cx="75" cy="50" rx="20" ry="12" fill="#43a047" transform="rotate(50 75 50)"/></svg>`
+                seed: `<svg viewBox="0 0 100 100">
+                    <defs>
+                        <radialGradient id="rose-seed" cx="40%" cy="30%">
+                            <stop offset="0%" stop-color="#8b6914"/>
+                            <stop offset="100%" stop-color="#5a4309"/>
+                        </radialGradient>
+                    </defs>
+                    <ellipse cx="50" cy="72" rx="10" ry="14" fill="url(#rose-seed)"/>
+                    <ellipse cx="47" cy="68" rx="3" ry="5" fill="rgba(255,255,255,0.2)" transform="rotate(-20 47 68)"/>
+                </svg>`,
+                sprout: `<svg viewBox="0 0 100 100">
+                    <defs>
+                        <linearGradient id="rose-stem1" x1="0%" y1="100%" x2="0%" y2="0%">
+                            <stop offset="0%" stop-color="#1b5e20"/>
+                            <stop offset="100%" stop-color="#388e3c"/>
+                        </linearGradient>
+                    </defs>
+                    <path d="M50 82 C51 70 50 60 50 52" stroke="url(#rose-stem1)" stroke-width="4" fill="none" stroke-linecap="round"/>
+                    <ellipse cx="44" cy="52" rx="10" ry="5" fill="#4caf50" transform="rotate(-35 44 52)"/>
+                    <ellipse cx="56" cy="54" rx="9" ry="4" fill="#66bb6a" transform="rotate(30 56 54)"/>
+                    <circle cx="44" cy="52" r="2" fill="#c62828" opacity="0.5"/>
+                </svg>`,
+                leaf: `<svg viewBox="0 0 100 100">
+                    <defs>
+                        <linearGradient id="rose-stem2" x1="0%" y1="100%" x2="0%" y2="0%">
+                            <stop offset="0%" stop-color="#1b5e20"/>
+                            <stop offset="100%" stop-color="#388e3c"/>
+                        </linearGradient>
+                        <radialGradient id="rose-leaf" cx="30%" cy="30%">
+                            <stop offset="0%" stop-color="#66bb6a"/>
+                            <stop offset="100%" stop-color="#2e7d32"/>
+                        </radialGradient>
+                    </defs>
+                    <path d="M50 88 C50 68 50 55 50 40" stroke="url(#rose-stem2)" stroke-width="5" fill="none" stroke-linecap="round"/>
+                    <ellipse cx="35" cy="58" rx="18" ry="10" fill="url(#rose-leaf)" transform="rotate(-45 35 58)"/>
+                    <ellipse cx="65" cy="56" rx="17" ry="9" fill="#43a047" transform="rotate(42 65 56)"/>
+                    <ellipse cx="40" cy="42" rx="14" ry="7" fill="#66bb6a" transform="rotate(-32 40 42)"/>
+                    <ellipse cx="60" cy="40" rx="13" ry="6" fill="#81c784" transform="rotate(28 60 40)"/>
+                    <path d="M30 55 Q40 58 50 60" stroke="#1b5e20" stroke-width="1" fill="none" opacity="0.3"/>
+                </svg>`,
+                bud: `<svg viewBox="0 0 100 100">
+                    <defs>
+                        <linearGradient id="rose-stem3" x1="0%" y1="100%" x2="0%" y2="0%">
+                            <stop offset="0%" stop-color="#1b5e20"/>
+                            <stop offset="100%" stop-color="#388e3c"/>
+                        </linearGradient>
+                        <radialGradient id="rose-bud" cx="50%" cy="30%">
+                            <stop offset="0%" stop-color="#f48fb1"/>
+                            <stop offset="60%" stop-color="#e91e63"/>
+                            <stop offset="100%" stop-color="#880e4f"/>
+                        </radialGradient>
+                    </defs>
+                    <path d="M50 92 C50 68 50 50 50 35" stroke="url(#rose-stem3)" stroke-width="5" fill="none" stroke-linecap="round"/>
+                    <ellipse cx="33" cy="60" rx="18" ry="10" fill="#4caf50" transform="rotate(-48 33 60)" opacity="0.9"/>
+                    <ellipse cx="67" cy="58" rx="17" ry="9" fill="#66bb6a" transform="rotate(45 67 58)" opacity="0.9"/>
+                    <g transform="translate(50,20)">
+                        <ellipse rx="8" ry="14" fill="#f06292" transform="rotate(0)"/>
+                        <ellipse rx="8" ry="14" fill="#f06292" transform="rotate(60)"/>
+                        <ellipse rx="8" ry="14" fill="#f06292" transform="rotate(120)"/>
+                        <ellipse rx="8" ry="14" fill="#e91e63" transform="rotate(30)"/>
+                        <ellipse rx="8" ry="14" fill="#e91e63" transform="rotate(90)"/>
+                        <ellipse rx="8" ry="14" fill="#e91e63" transform="rotate(150)"/>
+                    </g>
+                    <circle cx="50" cy="20" r="8" fill="#c2185b"/>
+                    <ellipse cx="48" cy="17" rx="3" ry="5" fill="rgba(255,255,255,0.25)" transform="rotate(-10 48 17)"/>
+                </svg>`,
+                bloom: `<svg viewBox="0 0 100 100">
+                    <defs>
+                        <linearGradient id="rose-stem4" x1="0%" y1="100%" x2="0%" y2="0%">
+                            <stop offset="0%" stop-color="#1b5e20"/>
+                            <stop offset="100%" stop-color="#388e3c"/>
+                        </linearGradient>
+                        <radialGradient id="rose-center" cx="50%" cy="50%">
+                            <stop offset="0%" stop-color="#e91e63"/>
+                            <stop offset="100%" stop-color="#880e4f"/>
+                        </radialGradient>
+                    </defs>
+                    <path d="M50 95 C50 70 50 52 50 38" stroke="url(#rose-stem4)" stroke-width="5" fill="none" stroke-linecap="round"/>
+                    <ellipse cx="30" cy="60" rx="20" ry="11" fill="#4caf50" transform="rotate(-50 30 60)" opacity="0.9"/>
+                    <ellipse cx="70" cy="58" rx="19" ry="10" fill="#66bb6a" transform="rotate(48 70 58)" opacity="0.9"/>
+                    <g transform="translate(50,24)">
+                        <ellipse rx="9" ry="16" fill="#f48fb1" transform="rotate(0)"/>
+                        <ellipse rx="9" ry="16" fill="#f48fb1" transform="rotate(51.4)"/>
+                        <ellipse rx="9" ry="16" fill="#f48fb1" transform="rotate(102.8)"/>
+                        <ellipse rx="9" ry="16" fill="#f48fb1" transform="rotate(154.2)"/>
+                        <ellipse rx="9" ry="16" fill="#f48fb1" transform="rotate(205.6)"/>
+                        <ellipse rx="9" ry="16" fill="#f48fb1" transform="rotate(257.1)"/>
+                        <ellipse rx="9" ry="16" fill="#f06292" transform="rotate(25.7)"/>
+                        <ellipse rx="9" ry="16" fill="#f06292" transform="rotate(77.1)"/>
+                        <ellipse rx="9" ry="16" fill="#f06292" transform="rotate(128.5)"/>
+                        <ellipse rx="9" ry="16" fill="#f06292" transform="rotate(180)"/>
+                        <ellipse rx="9" ry="16" fill="#f06292" transform="rotate(231.4)"/>
+                        <ellipse rx="9" ry="16" fill="#f06292" transform="rotate(282.8)"/>
+                    </g>
+                    <circle cx="50" cy="24" r="10" fill="url(#rose-center)"/>
+                    <circle cx="46" cy="20" r="4" fill="rgba(255,255,255,0.2)"/>
+                </svg>`,
+                flourish: `<svg viewBox="0 0 100 100">
+                    <defs>
+                        <linearGradient id="rose-stem5" x1="0%" y1="100%" x2="0%" y2="0%">
+                            <stop offset="0%" stop-color="#1b5e20"/>
+                            <stop offset="100%" stop-color="#43a047"/>
+                        </linearGradient>
+                        <radialGradient id="rose-center2" cx="45%" cy="40%">
+                            <stop offset="0%" stop-color="#e91e63"/>
+                            <stop offset="100%" stop-color="#6a1b9a"/>
+                        </radialGradient>
+                    </defs>
+                    <path d="M50 96 C50 72 50 52 50 36" stroke="url(#rose-stem5)" stroke-width="6" fill="none" stroke-linecap="round"/>
+                    <ellipse cx="28" cy="62" rx="22" ry="12" fill="#388e3c" transform="rotate(-55 28 62)" opacity="0.95"/>
+                    <ellipse cx="72" cy="60" rx="21" ry="11" fill="#43a047" transform="rotate(52 72 60)" opacity="0.95"/>
+                    <ellipse cx="34" cy="44" rx="17" ry="9" fill="#4caf50" transform="rotate(-45 34 44)" opacity="0.9"/>
+                    <ellipse cx="66" cy="42" rx="16" ry="8" fill="#66bb6a" transform="rotate(42 66 42)" opacity="0.9"/>
+                    <g transform="translate(50,22)">
+                        ${Array.from({length: 16}, (_, i) => `<ellipse rx="8" ry="15" fill="${i % 2 === 0 ? '#f8bbd9' : '#f06292'}" transform="rotate(${i * 22.5})"/>`).join('')}
+                    </g>
+                    <circle cx="50" cy="22" r="12" fill="url(#rose-center2)"/>
+                    <circle cx="45" cy="17" r="5" fill="rgba(255,255,255,0.2)"/>
+                </svg>`
             },
             chrysanthemum: {
-                seed: `<svg viewBox="0 0 100 100"><ellipse cx="50" cy="70" rx="8" ry="12" fill="#5d4037"/></svg>`,
-                sprout: `<svg viewBox="0 0 100 100"><path d="M50 80 Q50 60 50 50" stroke="#4caf50" stroke-width="3" fill="none"/><ellipse cx="45" cy="50" rx="8" ry="5" fill="#66bb6a" transform="rotate(-30 45 50)"/><ellipse cx="55" cy="50" rx="8" ry="5" fill="#66bb6a" transform="rotate(30 55 50)"/></svg>`,
-                leaf: `<svg viewBox="0 0 100 100"><path d="M50 85 Q50 50 50 35" stroke="#4caf50" stroke-width="4" fill="none"/><ellipse cx="35" cy="55" rx="15" ry="8" fill="#66bb6a" transform="rotate(-40 35 55)"/><ellipse cx="65" cy="55" rx="15" ry="8" fill="#66bb6a" transform="rotate(40 65 55)"/><ellipse cx="40" cy="40" rx="12" ry="6" fill="#81c784" transform="rotate(-30 40 40)"/><ellipse cx="60" cy="40" rx="12" ry="6" fill="#81c784" transform="rotate(30 60 40)"/></svg>`,
-                bud: `<svg viewBox="0 0 100 100"><path d="M50 90 Q50 50 50 30" stroke="#4caf50" stroke-width="5" fill="none"/><ellipse cx="30" cy="60" rx="18" ry="10" fill="#66bb6a" transform="rotate(-45 30 60)"/><ellipse cx="70" cy="60" rx="18" ry="10" fill="#66bb6a" transform="rotate(45 70 60)"/><circle cx="50" cy="20" r="12" fill="#ffc107"/><ellipse cx="50" cy="20" rx="6" ry="10" fill="#ffb300" transform="rotate(45 50 20)"/></svg>`,
-                bloom: `<svg viewBox="0 0 100 100"><path d="M50 95 Q50 50 50 35" stroke="#4caf50" stroke-width="5" fill="none"/><g transform="translate(50,22)">${Array.from({length: 16}, (_, i) => `<ellipse rx="5" ry="14" fill="#ffc107" transform="rotate(${i * 22.5})"/>`).join('')}</g><circle cx="50" cy="22" r="8" fill="#ff8f00"/><ellipse cx="30" cy="55" rx="18" ry="10" fill="#66bb6a" transform="rotate(-45 30 55)"/><ellipse cx="70" cy="55" rx="18" ry="10" fill="#66bb6a" transform="rotate(45 70 55)"/></svg>`,
-                flourish: `<svg viewBox="0 0 100 100"><path d="M50 95 Q50 50 50 30" stroke="#2e7d32" stroke-width="6" fill="none"/><g transform="translate(50,22)">${Array.from({length: 20}, (_, i) => `<ellipse rx="5" ry="16" fill="#ffca28" transform="rotate(${i * 18})"/>`).join('')}</g><circle cx="50" cy="22" r="10" fill="#ff6f00"/><ellipse cx="25" cy="50" rx="20" ry="12" fill="#43a047" transform="rotate(-50 25 50)"/><ellipse cx="75" cy="50" rx="20" ry="12" fill="#43a047" transform="rotate(50 75 50)"/></svg>`
+                seed: `<svg viewBox="0 0 100 100"><defs><radialGradient id="chry-seed" cx="40%" cy="30%"><stop offset="0%" stop-color="#8b6914"/><stop offset="100%" stop-color="#5a4309"/></radialGradient></defs><ellipse cx="50" cy="72" rx="10" ry="14" fill="url(#chry-seed)"/><ellipse cx="47" cy="68" rx="3" ry="5" fill="rgba(255,255,255,0.2)" transform="rotate(-20 47 68)"/></svg>`,
+                sprout: `<svg viewBox="0 0 100 100"><defs><linearGradient id="chry-stem1" x1="0%" y1="100%" x2="0%" y2="0%"><stop offset="0%" stop-color="#2d5a27"/><stop offset="100%" stop-color="#4caf50"/></linearGradient></defs><path d="M50 82 C52 70 50 60 50 52" stroke="url(#chry-stem1)" stroke-width="4" fill="none" stroke-linecap="round"/><ellipse cx="44" cy="52" rx="10" ry="5" fill="#66bb6a" transform="rotate(-38 44 52)"/><ellipse cx="56" cy="54" rx="9" ry="4" fill="#81c784" transform="rotate(32 56 54)"/></svg>`,
+                leaf: `<svg viewBox="0 0 100 100"><defs><linearGradient id="chry-stem2" x1="0%" y1="100%" x2="0%" y2="0%"><stop offset="0%" stop-color="#1b4d1a"/><stop offset="100%" stop-color="#388e3c"/></linearGradient></defs><path d="M50 88 C50 68 50 55 50 40" stroke="url(#chry-stem2)" stroke-width="5" fill="none" stroke-linecap="round"/><ellipse cx="35" cy="58" rx="18" ry="10" fill="#4caf50" transform="rotate(-45 35 58)"/><ellipse cx="65" cy="56" rx="17" ry="9" fill="#66bb6a" transform="rotate(42 65 56)"/><ellipse cx="40" cy="42" rx="14" ry="7" fill="#81c784" transform="rotate(-32 40 42)"/><ellipse cx="60" cy="40" rx="13" ry="6" fill="#a5d6a7" transform="rotate(28 60 40)"/></svg>`,
+                bud: `<svg viewBox="0 0 100 100"><defs><linearGradient id="chry-stem3" x1="0%" y1="100%" x2="0%" y2="0%"><stop offset="0%" stop-color="#1b4d1a"/><stop offset="100%" stop-color="#388e3c"/></linearGradient><radialGradient id="chry-bud" cx="50%" cy="40%"><stop offset="0%" stop-color="#fff9c4"/><stop offset="60%" stop-color="#ffc107"/><stop offset="100%" stop-color="#ff8f00"/></radialGradient></defs><path d="M50 92 C50 68 50 50 50 35" stroke="url(#chry-stem3)" stroke-width="5" fill="none" stroke-linecap="round"/><ellipse cx="32" cy="62" rx="18" ry="10" fill="#4caf50" transform="rotate(-48 32 62)" opacity="0.9"/><ellipse cx="68" cy="60" rx="17" ry="9" fill="#66bb6a" transform="rotate(45 68 60)" opacity="0.9"/><circle cx="50" cy="22" r="14" fill="url(#chry-bud)"/><circle cx="46" cy="18" r="5" fill="rgba(255,255,255,0.3)"/></svg>`,
+                bloom: `<svg viewBox="0 0 100 100"><defs><linearGradient id="chry-stem4" x1="0%" y1="100%" x2="0%" y2="0%"><stop offset="0%" stop-color="#1b4d1a"/><stop offset="100%" stop-color="#388e3c"/></linearGradient><radialGradient id="chry-center" cx="50%" cy="50%"><stop offset="0%" stop-color="#ff8f00"/><stop offset="100%" stop-color="#e65100"/></radialGradient><linearGradient id="chry-petal" x1="0%" y1="100%" x2="0%" y2="0%"><stop offset="0%" stop-color="#ffb300"/><stop offset="100%" stop-color="#ffe082"/></linearGradient></defs><path d="M50 95 C50 70 50 52 50 38" stroke="url(#chry-stem4)" stroke-width="5" fill="none" stroke-linecap="round"/><ellipse cx="30" cy="60" rx="20" ry="11" fill="#4caf50" transform="rotate(-50 30 60)" opacity="0.9"/><ellipse cx="70" cy="58" rx="19" ry="10" fill="#66bb6a" transform="rotate(48 70 58)" opacity="0.9"/><g transform="translate(50,24)">${Array.from({length: 16}, (_, i) => `<ellipse rx="5" ry="15" fill="url(#chry-petal)" transform="rotate(${i * 22.5})"/>`).join('')}</g><circle cx="50" cy="24" r="10" fill="url(#chry-center)"/><circle cx="46" cy="20" r="4" fill="rgba(255,255,255,0.2)"/></svg>`,
+                flourish: `<svg viewBox="0 0 100 100"><defs><linearGradient id="chry-stem5" x1="0%" y1="100%" x2="0%" y2="0%"><stop offset="0%" stop-color="#1b4d1a"/><stop offset="100%" stop-color="#43a047"/></linearGradient><radialGradient id="chry-center2" cx="50%" cy="50%"><stop offset="0%" stop-color="#ff6f00"/><stop offset="100%" stop-color="#bf360c"/></radialGradient><linearGradient id="chry-petal2" x1="0%" y1="100%" x2="0%" y2="0%"><stop offset="0%" stop-color="#ffca28"/><stop offset="100%" stop-color="#fff9c4"/></linearGradient></defs><path d="M50 96 C50 72 50 52 50 36" stroke="url(#chry-stem5)" stroke-width="6" fill="none" stroke-linecap="round"/><ellipse cx="28" cy="62" rx="22" ry="12" fill="#388e3c" transform="rotate(-55 28 62)" opacity="0.95"/><ellipse cx="72" cy="60" rx="21" ry="11" fill="#43a047" transform="rotate(52 72 60)" opacity="0.95"/><g transform="translate(50,22)">${Array.from({length: 20}, (_, i) => `<ellipse rx="5" ry="17" fill="url(#chry-petal2)" transform="rotate(${i * 18})"/>`).join('')}</g><circle cx="50" cy="22" r="12" fill="url(#chry-center2)"/><circle cx="45" cy="17" r="5" fill="rgba(255,255,200,0.2)"/></svg>`
             },
             lotus: {
-                seed: `<svg viewBox="0 0 100 100"><ellipse cx="50" cy="70" rx="8" ry="12" fill="#5d4037"/></svg>`,
-                sprout: `<svg viewBox="0 0 100 100"><path d="M50 80 Q50 60 50 50" stroke="#4caf50" stroke-width="3" fill="none"/><ellipse cx="45" cy="50" rx="8" ry="5" fill="#66bb6a" transform="rotate(-30 45 50)"/><ellipse cx="55" cy="50" rx="8" ry="5" fill="#66bb6a" transform="rotate(30 55 50)"/></svg>`,
-                leaf: `<svg viewBox="0 0 100 100"><path d="M50 85 Q50 50 50 40" stroke="#4caf50" stroke-width="4" fill="none"/><ellipse cx="50" cy="35" rx="25" ry="15" fill="#66bb6a"/><path d="M35 35 Q50 20 65 35" fill="#81c784"/></svg>`,
-                bud: `<svg viewBox="0 0 100 100"><path d="M50 90 Q50 55 50 40" stroke="#4caf50" stroke-width="5" fill="none"/><ellipse cx="50" cy="30" rx="10" ry="20" fill="#f8bbd9"/><ellipse cx="40" cy="35" rx="8" ry="15" fill="#f48fb1" transform="rotate(-20 40 35)"/><ellipse cx="60" cy="35" rx="8" ry="15" fill="#f48fb1" transform="rotate(20 60 35)"/><ellipse cx="50" cy="40" rx="30" ry="12" fill="#66bb6a"/></svg>`,
-                bloom: `<svg viewBox="0 0 100 100"><path d="M50 90 Q50 60 50 50" stroke="#4caf50" stroke-width="5" fill="none"/><ellipse cx="50" cy="25" rx="8" ry="18" fill="#f8bbd9"/><ellipse cx="38" cy="30" rx="7" ry="16" fill="#f48fb1" transform="rotate(-25 38 30)"/><ellipse cx="62" cy="30" rx="7" ry="16" fill="#f48fb1" transform="rotate(25 62 30)"/><ellipse cx="30" cy="38" rx="6" ry="14" fill="#f06292" transform="rotate(-45 30 38)"/><ellipse cx="70" cy="38" rx="6" ry="14" fill="#f06292" transform="rotate(45 70 38)"/><ellipse cx="50" cy="50" rx="35" ry="15" fill="#66bb6a"/><circle cx="50" cy="28" r="6" fill="#ffeb3b"/></svg>`,
-                flourish: `<svg viewBox="0 0 100 100"><path d="M50 95 Q50 60 50 50" stroke="#2e7d32" stroke-width="6" fill="none"/><ellipse cx="50" cy="20" rx="9" ry="20" fill="#f8bbd9"/><ellipse cx="35" cy="25" rx="8" ry="18" fill="#f48fb1" transform="rotate(-30 35 25)"/><ellipse cx="65" cy="25" rx="8" ry="18" fill="#f48fb1" transform="rotate(30 65 25)"/><ellipse cx="25" cy="35" rx="7" ry="15" fill="#f06292" transform="rotate(-50 25 35)"/><ellipse cx="75" cy="35" rx="7" ry="15" fill="#f06292" transform="rotate(50 75 35)"/><ellipse cx="20" cy="45" rx="6" ry="12" fill="#ec407a" transform="rotate(-60 20 45)"/><ellipse cx="80" cy="45" rx="6" ry="12" fill="#ec407a" transform="rotate(60 80 45)"/><ellipse cx="50" cy="55" rx="40" ry="18" fill="#43a047"/><circle cx="50" cy="23" r="8" fill="#ffeb3b"/></svg>`
+                seed: `<svg viewBox="0 0 100 100"><defs><radialGradient id="lotus-seed" cx="40%" cy="30%"><stop offset="0%" stop-color="#8b6914"/><stop offset="100%" stop-color="#5a4309"/></radialGradient></defs><ellipse cx="50" cy="72" rx="10" ry="14" fill="url(#lotus-seed)"/><ellipse cx="47" cy="68" rx="3" ry="5" fill="rgba(255,255,255,0.2)" transform="rotate(-20 47 68)"/></svg>`,
+                sprout: `<svg viewBox="0 0 100 100"><defs><linearGradient id="lotus-stem1" x1="0%" y1="100%" x2="0%" y2="0%"><stop offset="0%" stop-color="#2d5a27"/><stop offset="100%" stop-color="#4caf50"/></linearGradient></defs><path d="M50 82 C52 70 50 60 50 52" stroke="url(#lotus-stem1)" stroke-width="4" fill="none" stroke-linecap="round"/><ellipse cx="44" cy="52" rx="10" ry="5" fill="#66bb6a" transform="rotate(-35 44 52)"/><ellipse cx="56" cy="54" rx="9" ry="4" fill="#81c784" transform="rotate(30 56 54)"/></svg>`,
+                leaf: `<svg viewBox="0 0 100 100"><defs><linearGradient id="lotus-leaf" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#4caf50"/><stop offset="100%" stop-color="#2e7d32"/></linearGradient></defs><path d="M50 88 C50 68 50 55 50 42" stroke="#388e3c" stroke-width="5" fill="none" stroke-linecap="round"/><ellipse cx="50" cy="38" rx="32" ry="18" fill="url(#lotus-leaf)"/><path d="M50 25 Q50 38 50 42" stroke="#1b5e20" stroke-width="2" fill="none"/><path d="M30 30 Q50 38 70 30" fill="none" stroke="#81c784" stroke-width="1.5"/></svg>`,
+                bud: `<svg viewBox="0 0 100 100"><defs><linearGradient id="lotus-stem3" x1="0%" y1="100%" x2="0%" y2="0%"><stop offset="0%" stop-color="#1b4d1a"/><stop offset="100%" stop-color="#388e3c"/></linearGradient><linearGradient id="lotus-bud" x1="0%" y1="100%" x2="0%" y2="0%"><stop offset="0%" stop-color="#f8bbd9"/><stop offset="100%" stop-color="#f48fb1"/></linearGradient></defs><path d="M50 92 C50 68 50 55 50 42" stroke="url(#lotus-stem3)" stroke-width="5" fill="none" stroke-linecap="round"/><ellipse cx="50" cy="32" rx="10" ry="18" fill="url(#lotus-bud)"/><ellipse cx="42" cy="35" rx="7" ry="14" fill="#f06292" transform="rotate(-18 42 35)"/><ellipse cx="58" cy="35" rx="7" ry="14" fill="#f06292" transform="rotate(18 58 35)"/><ellipse cx="50" cy="48" rx="35" ry="14" fill="#43a047" opacity="0.9"/><circle cx="47" cy="28" r="4" fill="rgba(255,255,255,0.3)"/></svg>`,
+                bloom: `<svg viewBox="0 0 100 100"><defs><linearGradient id="lotus-stem4" x1="0%" y1="100%" x2="0%" y2="0%"><stop offset="0%" stop-color="#1b4d1a"/><stop offset="100%" stop-color="#388e3c"/></linearGradient><linearGradient id="lotus-petal" x1="0%" y1="100%" x2="0%" y2="0%"><stop offset="0%" stop-color="#f8bbd9"/><stop offset="50%" stop-color="#f48fb1"/><stop offset="100%" stop-color="#ec407a"/></linearGradient><radialGradient id="lotus-center" cx="50%" cy="50%"><stop offset="0%" stop-color="#ffeb3b"/><stop offset="100%" stop-color="#ffc107"/></radialGradient></defs><path d="M50 95 C50 70 50 55 50 48" stroke="url(#lotus-stem4)" stroke-width="5" fill="none" stroke-linecap="round"/><ellipse cx="50" cy="26" rx="9" ry="18" fill="url(#lotus-petal)"/><ellipse cx="38" cy="30" rx="8" ry="16" fill="#f48fb1" transform="rotate(-22 38 30)"/><ellipse cx="62" cy="30" rx="8" ry="16" fill="#f48fb1" transform="rotate(22 62 30)"/><ellipse cx="28" cy="38" rx="7" ry="14" fill="#f06292" transform="rotate(-45 28 38)"/><ellipse cx="72" cy="38" rx="7" ry="14" fill="#f06292" transform="rotate(45 72 38)"/><ellipse cx="50" cy="50" rx="38" ry="16" fill="#43a047"/><circle cx="50" cy="28" r="7" fill="url(#lotus-center)"/><circle cx="47" cy="25" r="3" fill="rgba(255,255,255,0.4)"/></svg>`,
+                flourish: `<svg viewBox="0 0 100 100"><defs><linearGradient id="lotus-stem5" x1="0%" y1="100%" x2="0%" y2="0%"><stop offset="0%" stop-color="#1b4d1a"/><stop offset="100%" stop-color="#43a047"/></linearGradient><linearGradient id="lotus-petal2" x1="0%" y1="100%" x2="0%" y2="0%"><stop offset="0%" stop-color="#f8bbd9"/><stop offset="40%" stop-color="#f48fb1"/><stop offset="100%" stop-color="#e91e63"/></linearGradient><radialGradient id="lotus-center2" cx="50%" cy="50%"><stop offset="0%" stop-color="#ffeb3b"/><stop offset="100%" stop-color="#ff8f00"/></radialGradient></defs><path d="M50 96 C50 72 50 58 50 50" stroke="url(#lotus-stem5)" stroke-width="6" fill="none" stroke-linecap="round"/><ellipse cx="50" cy="22" rx="10" ry="20" fill="url(#lotus-petal2)"/><ellipse cx="35" cy="26" rx="9" ry="18" fill="#f48fb1" transform="rotate(-25 35 26)"/><ellipse cx="65" cy="26" rx="9" ry="18" fill="#f48fb1" transform="rotate(25 65 26)"/><ellipse cx="24" cy="36" rx="8" ry="15" fill="#f06292" transform="rotate(-48 24 36)"/><ellipse cx="76" cy="36" rx="8" ry="15" fill="#f06292" transform="rotate(48 76 36)"/><ellipse cx="18" cy="46" rx="7" ry="12" fill="#ec407a" transform="rotate(-60 18 46)"/><ellipse cx="82" cy="46" rx="7" ry="12" fill="#ec407a" transform="rotate(60 82 46)"/><ellipse cx="50" cy="54" rx="42" ry="18" fill="#388e3c"/><circle cx="50" cy="24" r="9" fill="url(#lotus-center2)"/><circle cx="46" cy="20" r="4" fill="rgba(255,255,255,0.4)"/></svg>`
             },
             tulip: {
-                seed: `<svg viewBox="0 0 100 100"><ellipse cx="50" cy="70" rx="8" ry="12" fill="#5d4037"/></svg>`,
-                sprout: `<svg viewBox="0 0 100 100"><path d="M50 80 Q50 60 50 50" stroke="#4caf50" stroke-width="3" fill="none"/><ellipse cx="45" cy="50" rx="8" ry="5" fill="#66bb6a" transform="rotate(-30 45 50)"/><ellipse cx="55" cy="50" rx="8" ry="5" fill="#66bb6a" transform="rotate(30 55 50)"/></svg>`,
-                leaf: `<svg viewBox="0 0 100 100"><path d="M50 85 Q50 50 50 35" stroke="#4caf50" stroke-width="4" fill="none"/><ellipse cx="35" cy="55" rx="12" ry="20" fill="#66bb6a" transform="rotate(-20 35 55)"/><ellipse cx="65" cy="55" rx="12" ry="20" fill="#66bb6a" transform="rotate(20 65 55)"/></svg>`,
-                bud: `<svg viewBox="0 0 100 100"><path d="M50 90 Q50 50 50 35" stroke="#4caf50" stroke-width="5" fill="none"/><ellipse cx="35" cy="55" rx="12" ry="22" fill="#66bb6a" transform="rotate(-20 35 55)"/><ellipse cx="65" cy="55" rx="12" ry="22" fill="#66bb6a" transform="rotate(20 65 55)"/><ellipse cx="50" cy="22" rx="10" ry="18" fill="#e53935"/></svg>`,
-                bloom: `<svg viewBox="0 0 100 100"><path d="M50 95 Q50 50 50 35" stroke="#4caf50" stroke-width="5" fill="none"/><ellipse cx="35" cy="55" rx="12" ry="25" fill="#66bb6a" transform="rotate(-15 35 55)"/><ellipse cx="65" cy="55" rx="12" ry="25" fill="#66bb6a" transform="rotate(15 65 55)"/><ellipse cx="50" cy="20" rx="12" ry="22" fill="#e53935"/><ellipse cx="42" cy="22" rx="8" ry="18" fill="#ef5350" transform="rotate(-10 42 22)"/><ellipse cx="58" cy="22" rx="8" ry="18" fill="#ef5350" transform="rotate(10 58 22)"/></svg>`,
-                flourish: `<svg viewBox="0 0 100 100"><path d="M50 95 Q50 50 50 35" stroke="#2e7d32" stroke-width="6" fill="none"/><ellipse cx="32" cy="55" rx="14" ry="28" fill="#43a047" transform="rotate(-15 32 55)"/><ellipse cx="68" cy="55" rx="14" ry="28" fill="#43a047" transform="rotate(15 68 55)"/><ellipse cx="50" cy="18" rx="14" ry="25" fill="#c62828"/><ellipse cx="40" cy="20" rx="10" ry="20" fill="#e53935" transform="rotate(-10 40 20)"/><ellipse cx="60" cy="20" rx="10" ry="20" fill="#e53935" transform="rotate(10 60 20)"/><ellipse cx="50" cy="15" rx="6" ry="12" fill="#ef5350"/></svg>`
+                seed: `<svg viewBox="0 0 100 100"><defs><radialGradient id="tulip-seed" cx="40%" cy="30%"><stop offset="0%" stop-color="#8b6914"/><stop offset="100%" stop-color="#5a4309"/></radialGradient></defs><ellipse cx="50" cy="72" rx="10" ry="14" fill="url(#tulip-seed)"/><ellipse cx="47" cy="68" rx="3" ry="5" fill="rgba(255,255,255,0.2)" transform="rotate(-20 47 68)"/></svg>`,
+                sprout: `<svg viewBox="0 0 100 100"><defs><linearGradient id="tulip-stem1" x1="0%" y1="100%" x2="0%" y2="0%"><stop offset="0%" stop-color="#2d5a27"/><stop offset="100%" stop-color="#4caf50"/></linearGradient></defs><path d="M50 82 C52 70 50 60 50 52" stroke="url(#tulip-stem1)" stroke-width="4" fill="none" stroke-linecap="round"/><ellipse cx="43" cy="52" rx="10" ry="5" fill="#66bb6a" transform="rotate(-35 43 52)"/><ellipse cx="57" cy="54" rx="9" ry="4" fill="#81c784" transform="rotate(30 57 54)"/></svg>`,
+                leaf: `<svg viewBox="0 0 100 100"><defs><linearGradient id="tulip-stem2" x1="0%" y1="100%" x2="0%" y2="0%"><stop offset="0%" stop-color="#1b4d1a"/><stop offset="100%" stop-color="#388e3c"/></linearGradient><linearGradient id="tulip-leaf" x1="0%" y1="100%" x2="100%" y2="0%"><stop offset="0%" stop-color="#43a047"/><stop offset="100%" stop-color="#66bb6a"/></linearGradient></defs><path d="M50 88 C50 68 50 55 50 40" stroke="url(#tulip-stem2)" stroke-width="5" fill="none" stroke-linecap="round"/><ellipse cx="35" cy="58" rx="14" ry="24" fill="url(#tulip-leaf)" transform="rotate(-18 35 58)"/><ellipse cx="65" cy="56" rx="13" ry="22" fill="#4caf50" transform="rotate(15 65 56)"/></svg>`,
+                bud: `<svg viewBox="0 0 100 100"><defs><linearGradient id="tulip-stem3" x1="0%" y1="100%" x2="0%" y2="0%"><stop offset="0%" stop-color="#1b4d1a"/><stop offset="100%" stop-color="#388e3c"/></linearGradient><linearGradient id="tulip-bud" x1="0%" y1="100%" x2="0%" y2="0%"><stop offset="0%" stop-color="#c62828"/><stop offset="100%" stop-color="#ef5350"/></linearGradient></defs><path d="M50 92 C50 68 50 50 50 35" stroke="url(#tulip-stem3)" stroke-width="5" fill="none" stroke-linecap="round"/><ellipse cx="35" cy="58" rx="14" ry="26" fill="#43a047" transform="rotate(-15 35 58)" opacity="0.9"/><ellipse cx="65" cy="56" rx="13" ry="24" fill="#4caf50" transform="rotate(12 65 56)" opacity="0.9"/><ellipse cx="50" cy="20" rx="12" ry="22" fill="url(#tulip-bud)"/><ellipse cx="46" cy="16" rx="4" ry="8" fill="rgba(255,255,255,0.25)" transform="rotate(-10 46 16)"/></svg>`,
+                bloom: `<svg viewBox="0 0 100 100"><defs><linearGradient id="tulip-stem4" x1="0%" y1="100%" x2="0%" y2="0%"><stop offset="0%" stop-color="#1b4d1a"/><stop offset="100%" stop-color="#388e3c"/></linearGradient><linearGradient id="tulip-petal" x1="0%" y1="100%" x2="0%" y2="0%"><stop offset="0%" stop-color="#b71c1c"/><stop offset="50%" stop-color="#e53935"/><stop offset="100%" stop-color="#ffcdd2"/></linearGradient></defs><path d="M50 95 C50 70 50 52 50 38" stroke="url(#tulip-stem4)" stroke-width="5" fill="none" stroke-linecap="round"/><ellipse cx="33" cy="58" rx="15" ry="28" fill="#43a047" transform="rotate(-12 33 58)" opacity="0.9"/><ellipse cx="67" cy="56" rx="14" ry="26" fill="#4caf50" transform="rotate(10 67 56)" opacity="0.9"/><ellipse cx="50" cy="18" rx="14" ry="26" fill="url(#tulip-petal)"/><ellipse cx="42" cy="20" rx="10" ry="20" fill="#ef5350" transform="rotate(-8 42 20)"/><ellipse cx="58" cy="20" rx="10" ry="20" fill="#ef5350" transform="rotate(8 58 20)"/><ellipse cx="50" cy="14" rx="6" ry="12" fill="#ffcdd2"/></svg>`,
+                flourish: `<svg viewBox="0 0 100 100"><defs><linearGradient id="tulip-stem5" x1="0%" y1="100%" x2="0%" y2="0%"><stop offset="0%" stop-color="#1b4d1a"/><stop offset="100%" stop-color="#43a047"/></linearGradient><linearGradient id="tulip-petal2" x1="0%" y1="100%" x2="0%" y2="0%"><stop offset="0%" stop-color="#b71c1c"/><stop offset="40%" stop-color="#c62828"/><stop offset="100%" stop-color="#ffcdd2"/></linearGradient></defs><path d="M50 96 C50 72 50 52 50 36" stroke="url(#tulip-stem5)" stroke-width="6" fill="none" stroke-linecap="round"/><ellipse cx="30" cy="58" rx="16" ry="30" fill="#388e3c" transform="rotate(-10 30 58)" opacity="0.95"/><ellipse cx="70" cy="56" rx="15" ry="28" fill="#43a047" transform="rotate(8 70 56)" opacity="0.95"/><ellipse cx="50" cy="16" rx="16" ry="28" fill="url(#tulip-petal2)"/><ellipse cx="40" cy="18" rx="12" ry="22" fill="#e53935" transform="rotate(-6 40 18)"/><ellipse cx="60" cy="18" rx="12" ry="22" fill="#e53935" transform="rotate(6 60 18)"/><ellipse cx="50" cy="12" rx="8" ry="14" fill="#ef9a9a"/></svg>`
             },
             peony: {
-                seed: `<svg viewBox="0 0 100 100"><ellipse cx="50" cy="70" rx="8" ry="12" fill="#5d4037"/></svg>`,
-                sprout: `<svg viewBox="0 0 100 100"><path d="M50 80 Q50 60 50 50" stroke="#4caf50" stroke-width="3" fill="none"/><ellipse cx="45" cy="50" rx="8" ry="5" fill="#66bb6a" transform="rotate(-30 45 50)"/><ellipse cx="55" cy="50" rx="8" ry="5" fill="#66bb6a" transform="rotate(30 55 50)"/></svg>`,
-                leaf: `<svg viewBox="0 0 100 100"><path d="M50 85 Q50 50 50 35" stroke="#4caf50" stroke-width="4" fill="none"/><ellipse cx="35" cy="55" rx="15" ry="8" fill="#66bb6a" transform="rotate(-40 35 55)"/><ellipse cx="65" cy="55" rx="15" ry="8" fill="#66bb6a" transform="rotate(40 65 55)"/><ellipse cx="40" cy="40" rx="12" ry="6" fill="#81c784" transform="rotate(-30 40 40)"/><ellipse cx="60" cy="40" rx="12" ry="6" fill="#81c784" transform="rotate(30 60 40)"/></svg>`,
-                bud: `<svg viewBox="0 0 100 100"><path d="M50 90 Q50 50 50 30" stroke="#4caf50" stroke-width="5" fill="none"/><ellipse cx="30" cy="60" rx="18" ry="10" fill="#66bb6a" transform="rotate(-45 30 60)"/><ellipse cx="70" cy="60" rx="18" ry="10" fill="#66bb6a" transform="rotate(45 70 60)"/><circle cx="50" cy="20" r="15" fill="#f48fb1"/><ellipse cx="50" cy="20" rx="8" ry="12" fill="#f06292"/></svg>`,
-                bloom: `<svg viewBox="0 0 100 100"><path d="M50 95 Q50 50 50 35" stroke="#4caf50" stroke-width="5" fill="none"/><g transform="translate(50,25)"><ellipse rx="10" ry="18" fill="#f8bbd9"/><ellipse rx="10" ry="18" fill="#f8bbd9" transform="rotate(45)"/><ellipse rx="10" ry="18" fill="#f8bbd9" transform="rotate(90)"/><ellipse rx="10" ry="18" fill="#f8bbd9" transform="rotate(135)"/><ellipse rx="8" ry="14" fill="#f48fb1" transform="rotate(22.5)"/><ellipse rx="8" ry="14" fill="#f48fb1" transform="rotate(67.5)"/><ellipse rx="8" ry="14" fill="#f48fb1" transform="rotate(112.5)"/><ellipse rx="8" ry="14" fill="#f48fb1" transform="rotate(157.5)"/></g><circle cx="50" cy="25" r="8" fill="#ffeb3b"/><ellipse cx="30" cy="55" rx="18" ry="10" fill="#66bb6a" transform="rotate(-45 30 55)"/><ellipse cx="70" cy="55" rx="18" ry="10" fill="#66bb6a" transform="rotate(45 70 55)"/></svg>`,
-                flourish: `<svg viewBox="0 0 100 100"><path d="M50 95 Q50 50 50 30" stroke="#2e7d32" stroke-width="6" fill="none"/><g transform="translate(50,22)">${Array.from({length: 12}, (_, i) => `<ellipse rx="10" ry="18" fill="#f8bbd9" transform="rotate(${i * 30})"/>`).join('')}</g><circle cx="50" cy="22" r="10" fill="#ffeb3b"/><ellipse cx="25" cy="50" rx="20" ry="12" fill="#43a047" transform="rotate(-50 25 50)"/><ellipse cx="75" cy="50" rx="20" ry="12" fill="#43a047" transform="rotate(50 75 50)"/></svg>`
+                seed: `<svg viewBox="0 0 100 100"><defs><radialGradient id="peony-seed" cx="40%" cy="30%"><stop offset="0%" stop-color="#8b6914"/><stop offset="100%" stop-color="#5a4309"/></radialGradient></defs><ellipse cx="50" cy="72" rx="10" ry="14" fill="url(#peony-seed)"/><ellipse cx="47" cy="68" rx="3" ry="5" fill="rgba(255,255,255,0.2)" transform="rotate(-20 47 68)"/></svg>`,
+                sprout: `<svg viewBox="0 0 100 100"><defs><linearGradient id="peony-stem1" x1="0%" y1="100%" x2="0%" y2="0%"><stop offset="0%" stop-color="#2d5a27"/><stop offset="100%" stop-color="#4caf50"/></linearGradient></defs><path d="M50 82 C52 70 50 60 50 52" stroke="url(#peony-stem1)" stroke-width="4" fill="none" stroke-linecap="round"/><ellipse cx="44" cy="52" rx="10" ry="5" fill="#66bb6a" transform="rotate(-38 44 52)"/><ellipse cx="56" cy="54" rx="9" ry="4" fill="#81c784" transform="rotate(32 56 54)"/></svg>`,
+                leaf: `<svg viewBox="0 0 100 100"><defs><linearGradient id="peony-stem2" x1="0%" y1="100%" x2="0%" y2="0%"><stop offset="0%" stop-color="#1b4d1a"/><stop offset="100%" stop-color="#388e3c"/></linearGradient></defs><path d="M50 88 C50 68 50 55 50 40" stroke="url(#peony-stem2)" stroke-width="5" fill="none" stroke-linecap="round"/><ellipse cx="35" cy="58" rx="18" ry="10" fill="#4caf50" transform="rotate(-45 35 58)"/><ellipse cx="65" cy="56" rx="17" ry="9" fill="#66bb6a" transform="rotate(42 65 56)"/><ellipse cx="40" cy="42" rx="14" ry="7" fill="#81c784" transform="rotate(-32 40 42)"/><ellipse cx="60" cy="40" rx="13" ry="6" fill="#a5d6a7" transform="rotate(28 60 40)"/></svg>`,
+                bud: `<svg viewBox="0 0 100 100"><defs><linearGradient id="peony-stem3" x1="0%" y1="100%" x2="0%" y2="0%"><stop offset="0%" stop-color="#1b4d1a"/><stop offset="100%" stop-color="#388e3c"/></linearGradient><radialGradient id="peony-bud" cx="50%" cy="30%"><stop offset="0%" stop-color="#fce4ec"/><stop offset="60%" stop-color="#f48fb1"/><stop offset="100%" stop-color="#c2185b"/></radialGradient></defs><path d="M50 92 C50 68 50 50 50 35" stroke="url(#peony-stem3)" stroke-width="5" fill="none" stroke-linecap="round"/><ellipse cx="32" cy="62" rx="18" ry="10" fill="#4caf50" transform="rotate(-48 32 62)" opacity="0.9"/><ellipse cx="68" cy="60" rx="17" ry="9" fill="#66bb6a" transform="rotate(45 68 60)" opacity="0.9"/><circle cx="50" cy="22" r="16" fill="url(#peony-bud)"/><circle cx="45" cy="17" r="5" fill="rgba(255,255,255,0.3)"/></svg>`,
+                bloom: `<svg viewBox="0 0 100 100"><defs><linearGradient id="peony-stem4" x1="0%" y1="100%" x2="0%" y2="0%"><stop offset="0%" stop-color="#1b4d1a"/><stop offset="100%" stop-color="#388e3c"/></linearGradient><radialGradient id="peony-center" cx="50%" cy="50%"><stop offset="0%" stop-color="#ffeb3b"/><stop offset="100%" stop-color="#ffc107"/></radialGradient><linearGradient id="peony-petal" x1="0%" y1="100%" x2="0%" y2="0%"><stop offset="0%" stop-color="#f8bbd9"/><stop offset="100%" stop-color="#f48fb1"/></linearGradient></defs><path d="M50 95 C50 70 50 52 50 38" stroke="url(#peony-stem4)" stroke-width="5" fill="none" stroke-linecap="round"/><ellipse cx="30" cy="60" rx="20" ry="11" fill="#4caf50" transform="rotate(-50 30 60)" opacity="0.9"/><ellipse cx="70" cy="58" rx="19" ry="10" fill="#66bb6a" transform="rotate(48 70 58)" opacity="0.9"/><g transform="translate(50,24)"><ellipse rx="12" ry="18" fill="url(#peony-petal)" transform="rotate(0)"/><ellipse rx="12" ry="18" fill="url(#peony-petal)" transform="rotate(45)"/><ellipse rx="12" ry="18" fill="url(#peony-petal)" transform="rotate(90)"/><ellipse rx="12" ry="18" fill="url(#peony-petal)" transform="rotate(135)"/><ellipse rx="10" ry="15" fill="#f48fb1" transform="rotate(22.5)"/><ellipse rx="10" ry="15" fill="#f48fb1" transform="rotate(67.5)"/><ellipse rx="10" ry="15" fill="#f48fb1" transform="rotate(112.5)"/><ellipse rx="10" ry="15" fill="#f48fb1" transform="rotate(157.5)"/></g><circle cx="50" cy="24" r="10" fill="url(#peony-center)"/><circle cx="46" cy="20" r="4" fill="rgba(255,255,255,0.3)"/></svg>`,
+                flourish: `<svg viewBox="0 0 100 100"><defs><linearGradient id="peony-stem5" x1="0%" y1="100%" x2="0%" y2="0%"><stop offset="0%" stop-color="#1b4d1a"/><stop offset="100%" stop-color="#43a047"/></linearGradient><radialGradient id="peony-center2" cx="50%" cy="50%"><stop offset="0%" stop-color="#ffca28"/><stop offset="100%" stop-color="#f57f17"/></radialGradient><linearGradient id="peony-petal2" x1="0%" y1="100%" x2="0%" y2="0%"><stop offset="0%" stop-color="#f8bbd9"/><stop offset="50%" stop-color="#f48fb1"/><stop offset="100%" stop-color="#e91e63"/></linearGradient></defs><path d="M50 96 C50 72 50 52 50 36" stroke="url(#peony-stem5)" stroke-width="6" fill="none" stroke-linecap="round"/><ellipse cx="28" cy="62" rx="22" ry="12" fill="#388e3c" transform="rotate(-55 28 62)" opacity="0.95"/><ellipse cx="72" cy="60" rx="21" ry="11" fill="#43a047" transform="rotate(52 72 60)" opacity="0.95"/><g transform="translate(50,22)">${Array.from({length: 12}, (_, i) => `<ellipse rx="11" ry="19" fill="url(#peony-petal2)" transform="rotate(${i * 30})"/>`).join('')}</g><circle cx="50" cy="22" r="12" fill="url(#peony-center2)"/><circle cx="45" cy="17" r="5" fill="rgba(255,255,200,0.3)"/></svg>`
             },
             jasmine: {
-                seed: `<svg viewBox="0 0 100 100"><ellipse cx="50" cy="70" rx="8" ry="12" fill="#5d4037"/></svg>`,
-                sprout: `<svg viewBox="0 0 100 100"><path d="M50 80 Q50 60 50 50" stroke="#4caf50" stroke-width="3" fill="none"/><ellipse cx="45" cy="50" rx="8" ry="5" fill="#66bb6a" transform="rotate(-30 45 50)"/><ellipse cx="55" cy="50" rx="8" ry="5" fill="#66bb6a" transform="rotate(30 55 50)"/></svg>`,
-                leaf: `<svg viewBox="0 0 100 100"><path d="M50 85 Q50 50 50 35" stroke="#4caf50" stroke-width="4" fill="none"/><ellipse cx="35" cy="55" rx="15" ry="8" fill="#66bb6a" transform="rotate(-40 35 55)"/><ellipse cx="65" cy="55" rx="15" ry="8" fill="#66bb6a" transform="rotate(40 65 55)"/><ellipse cx="40" cy="40" rx="12" ry="6" fill="#81c784" transform="rotate(-30 40 40)"/><ellipse cx="60" cy="40" rx="12" ry="6" fill="#81c784" transform="rotate(30 60 40)"/></svg>`,
-                bud: `<svg viewBox="0 0 100 100"><path d="M50 90 Q50 50 50 30" stroke="#4caf50" stroke-width="5" fill="none"/><ellipse cx="30" cy="60" rx="18" ry="10" fill="#66bb6a" transform="rotate(-45 30 60)"/><ellipse cx="70" cy="60" rx="18" ry="10" fill="#66bb6a" transform="rotate(45 70 60)"/><ellipse cx="50" cy="20" rx="6" ry="12" fill="#fff"/><path d="M45 18 Q50 8 55 18" fill="#f5f5f5"/></svg>`,
-                bloom: `<svg viewBox="0 0 100 100"><path d="M50 95 Q50 50 50 35" stroke="#4caf50" stroke-width="5" fill="none"/><ellipse cx="30" cy="55" rx="18" ry="10" fill="#66bb6a" transform="rotate(-45 30 55)"/><ellipse cx="70" cy="55" rx="18" ry="10" fill="#66bb6a" transform="rotate(45 70 55)"/><g transform="translate(50,22)"><ellipse rx="5" ry="12" fill="#fff"/><ellipse rx="5" ry="12" fill="#fff" transform="rotate(72)"/><ellipse rx="5" ry="12" fill="#fff" transform="rotate(144)"/><ellipse rx="5" ry="12" fill="#fff" transform="rotate(216)"/><ellipse rx="5" ry="12" fill="#fff" transform="rotate(288)"/></g><circle cx="50" cy="22" r="5" fill="#ffeb3b"/></svg>`,
-                flourish: `<svg viewBox="0 0 100 100"><path d="M50 95 Q50 50 50 30" stroke="#2e7d32" stroke-width="6" fill="none"/><ellipse cx="25" cy="50" rx="20" ry="12" fill="#43a047" transform="rotate(-50 25 50)"/><ellipse cx="75" cy="50" rx="20" ry="12" fill="#43a047" transform="rotate(50 75 50)"/><g transform="translate(50,22)"><ellipse rx="6" ry="14" fill="#fff" transform="rotate(0)"/><ellipse rx="6" ry="14" fill="#fff" transform="rotate(60)"/><ellipse rx="6" ry="14" fill="#fff" transform="rotate(120)"/><ellipse rx="6" ry="14" fill="#fff" transform="rotate(180)"/><ellipse rx="6" ry="14" fill="#fff" transform="rotate(240)"/><ellipse rx="6" ry="14" fill="#fff" transform="rotate(300)"/></g><circle cx="50" cy="22" r="6" fill="#ffeb3b"/></svg>`
+                seed: `<svg viewBox="0 0 100 100"><defs><radialGradient id="jasmine-seed" cx="40%" cy="30%"><stop offset="0%" stop-color="#8b6914"/><stop offset="100%" stop-color="#5a4309"/></radialGradient></defs><ellipse cx="50" cy="72" rx="10" ry="14" fill="url(#jasmine-seed)"/><ellipse cx="47" cy="68" rx="3" ry="5" fill="rgba(255,255,255,0.2)" transform="rotate(-20 47 68)"/></svg>`,
+                sprout: `<svg viewBox="0 0 100 100"><defs><linearGradient id="jasmine-stem1" x1="0%" y1="100%" x2="0%" y2="0%"><stop offset="0%" stop-color="#2d5a27"/><stop offset="100%" stop-color="#4caf50"/></linearGradient></defs><path d="M50 82 C52 70 50 60 50 52" stroke="url(#jasmine-stem1)" stroke-width="4" fill="none" stroke-linecap="round"/><ellipse cx="44" cy="52" rx="10" ry="5" fill="#66bb6a" transform="rotate(-35 44 52)"/><ellipse cx="56" cy="54" rx="9" ry="4" fill="#81c784" transform="rotate(30 56 54)"/></svg>`,
+                leaf: `<svg viewBox="0 0 100 100"><defs><linearGradient id="jasmine-stem2" x1="0%" y1="100%" x2="0%" y2="0%"><stop offset="0%" stop-color="#1b4d1a"/><stop offset="100%" stop-color="#388e3c"/></linearGradient></defs><path d="M50 88 C50 68 50 55 50 40" stroke="url(#jasmine-stem2)" stroke-width="5" fill="none" stroke-linecap="round"/><ellipse cx="35" cy="58" rx="18" ry="10" fill="#4caf50" transform="rotate(-45 35 58)"/><ellipse cx="65" cy="56" rx="17" ry="9" fill="#66bb6a" transform="rotate(42 65 56)"/><ellipse cx="40" cy="42" rx="14" ry="7" fill="#81c784" transform="rotate(-32 40 42)"/><ellipse cx="60" cy="40" rx="13" ry="6" fill="#a5d6a7" transform="rotate(28 60 40)"/></svg>`,
+                bud: `<svg viewBox="0 0 100 100"><defs><linearGradient id="jasmine-stem3" x1="0%" y1="100%" x2="0%" y2="0%"><stop offset="0%" stop-color="#1b4d1a"/><stop offset="100%" stop-color="#388e3c"/></linearGradient><radialGradient id="jasmine-bud" cx="50%" cy="40%"><stop offset="0%" stop-color="#fff"/><stop offset="100%" stop-color="#e8eaf6"/></radialGradient></defs><path d="M50 92 C50 68 50 50 50 35" stroke="url(#jasmine-stem3)" stroke-width="5" fill="none" stroke-linecap="round"/><ellipse cx="32" cy="62" rx="18" ry="10" fill="#4caf50" transform="rotate(-48 32 62)" opacity="0.9"/><ellipse cx="68" cy="60" rx="17" ry="9" fill="#66bb6a" transform="rotate(45 68 60)" opacity="0.9"/><ellipse cx="50" cy="20" rx="7" ry="14" fill="url(#jasmine-bud)"/><path d="M45 16 Q50 6 55 16" stroke="#c5cae9" stroke-width="1.5" fill="none"/><circle cx="48" cy="14" r="2" fill="rgba(255,255,255,0.5)"/></svg>`,
+                bloom: `<svg viewBox="0 0 100 100"><defs><linearGradient id="jasmine-stem4" x1="0%" y1="100%" x2="0%" y2="0%"><stop offset="0%" stop-color="#1b4d1a"/><stop offset="100%" stop-color="#388e3c"/></linearGradient><radialGradient id="jasmine-center" cx="50%" cy="50%"><stop offset="0%" stop-color="#ffeb3b"/><stop offset="100%" stop-color="#ffc107"/></radialGradient></defs><path d="M50 95 C50 70 50 52 50 38" stroke="url(#jasmine-stem4)" stroke-width="5" fill="none" stroke-linecap="round"/><ellipse cx="30" cy="60" rx="20" ry="11" fill="#4caf50" transform="rotate(-50 30 60)" opacity="0.9"/><ellipse cx="70" cy="58" rx="19" ry="10" fill="#66bb6a" transform="rotate(48 70 58)" opacity="0.9"/><g transform="translate(50,24)"><ellipse rx="6" ry="13" fill="#fff" transform="rotate(0)"/><ellipse rx="6" ry="13" fill="#fff" transform="rotate(72)"/><ellipse rx="6" ry="13" fill="#fff" transform="rotate(144)"/><ellipse rx="6" ry="13" fill="#fff" transform="rotate(216)"/><ellipse rx="6" ry="13" fill="#fff" transform="rotate(288)"/></g><circle cx="50" cy="24" r="6" fill="url(#jasmine-center)"/><circle cx="48" cy="22" r="2" fill="rgba(255,255,255,0.5)"/></svg>`,
+                flourish: `<svg viewBox="0 0 100 100"><defs><linearGradient id="jasmine-stem5" x1="0%" y1="100%" x2="0%" y2="0%"><stop offset="0%" stop-color="#1b4d1a"/><stop offset="100%" stop-color="#43a047"/></linearGradient><radialGradient id="jasmine-center2" cx="50%" cy="50%"><stop offset="0%" stop-color="#ffeb3b"/><stop offset="100%" stop-color="#ff8f00"/></radialGradient></defs><path d="M50 96 C50 72 50 52 50 36" stroke="url(#jasmine-stem5)" stroke-width="6" fill="none" stroke-linecap="round"/><ellipse cx="28" cy="62" rx="22" ry="12" fill="#388e3c" transform="rotate(-55 28 62)" opacity="0.95"/><ellipse cx="72" cy="60" rx="21" ry="11" fill="#43a047" transform="rotate(52 72 60)" opacity="0.95"/><g transform="translate(50,22)"><ellipse rx="7" ry="15" fill="#fff" transform="rotate(0)"/><ellipse rx="7" ry="15" fill="#fff" transform="rotate(60)"/><ellipse rx="7" ry="15" fill="#fff" transform="rotate(120)"/><ellipse rx="7" ry="15" fill="#fff" transform="rotate(180)"/><ellipse rx="7" ry="15" fill="#fff" transform="rotate(240)"/><ellipse rx="7" ry="15" fill="#fff" transform="rotate(300)"/></g><circle cx="50" cy="22" r="7" fill="url(#jasmine-center2)"/><circle cx="48" cy="19" r="3" fill="rgba(255,255,255,0.5)"/></svg>`
             },
             azalea: {
-                seed: `<svg viewBox="0 0 100 100"><ellipse cx="50" cy="70" rx="8" ry="12" fill="#5d4037"/></svg>`,
-                sprout: `<svg viewBox="0 0 100 100"><path d="M50 80 Q50 60 50 50" stroke="#4caf50" stroke-width="3" fill="none"/><ellipse cx="45" cy="50" rx="8" ry="5" fill="#66bb6a" transform="rotate(-30 45 50)"/><ellipse cx="55" cy="50" rx="8" ry="5" fill="#66bb6a" transform="rotate(30 55 50)"/></svg>`,
-                leaf: `<svg viewBox="0 0 100 100"><path d="M50 85 Q50 50 50 35" stroke="#4caf50" stroke-width="4" fill="none"/><ellipse cx="35" cy="55" rx="15" ry="8" fill="#66bb6a" transform="rotate(-40 35 55)"/><ellipse cx="65" cy="55" rx="15" ry="8" fill="#66bb6a" transform="rotate(40 65 55)"/><ellipse cx="40" cy="40" rx="12" ry="6" fill="#81c784" transform="rotate(-30 40 40)"/><ellipse cx="60" cy="40" rx="12" ry="6" fill="#81c784" transform="rotate(30 60 40)"/></svg>`,
-                bud: `<svg viewBox="0 0 100 100"><path d="M50 90 Q50 50 50 30" stroke="#4caf50" stroke-width="5" fill="none"/><ellipse cx="30" cy="60" rx="18" ry="10" fill="#66bb6a" transform="rotate(-45 30 60)"/><ellipse cx="70" cy="60" rx="18" ry="10" fill="#66bb6a" transform="rotate(45 70 60)"/><circle cx="50" cy="20" r="12" fill="#e91e63"/><ellipse cx="50" cy="20" rx="6" ry="10" fill="#c2185b"/></svg>`,
-                bloom: `<svg viewBox="0 0 100 100"><path d="M50 95 Q50 50 50 35" stroke="#4caf50" stroke-width="5" fill="none"/><ellipse cx="30" cy="55" rx="18" ry="10" fill="#66bb6a" transform="rotate(-45 30 55)"/><ellipse cx="70" cy="55" rx="18" ry="10" fill="#66bb6a" transform="rotate(45 70 55)"/><g transform="translate(50,22)"><ellipse rx="7" ry="12" fill="#ff4081" transform="rotate(0)"/><ellipse rx="7" ry="12" fill="#ff4081" transform="rotate(72)"/><ellipse rx="7" ry="12" fill="#ff4081" transform="rotate(144)"/><ellipse rx="7" ry="12" fill="#ff4081" transform="rotate(216)"/><ellipse rx="7" ry="12" fill="#ff4081" transform="rotate(288)"/></g><circle cx="50" cy="22" r="6" fill="#ffeb3b"/></svg>`,
-                flourish: `<svg viewBox="0 0 100 100"><path d="M50 95 Q50 50 50 30" stroke="#2e7d32" stroke-width="6" fill="none"/><ellipse cx="25" cy="50" rx="20" ry="12" fill="#43a047" transform="rotate(-50 25 50)"/><ellipse cx="75" cy="50" rx="20" ry="12" fill="#43a047" transform="rotate(50 75 50)"/><g transform="translate(50,22)"><ellipse rx="8" ry="14" fill="#ff1744" transform="rotate(0)"/><ellipse rx="8" ry="14" fill="#ff1744" transform="rotate(60)"/><ellipse rx="8" ry="14" fill="#ff1744" transform="rotate(120)"/><ellipse rx="8" ry="14" fill="#ff1744" transform="rotate(180)"/><ellipse rx="8" ry="14" fill="#ff1744" transform="rotate(240)"/><ellipse rx="8" ry="14" fill="#ff1744" transform="rotate(300)"/></g><circle cx="50" cy="22" r="7" fill="#ffeb3b"/></svg>`
+                seed: `<svg viewBox="0 0 100 100"><defs><radialGradient id="azalea-seed" cx="40%" cy="30%"><stop offset="0%" stop-color="#8b6914"/><stop offset="100%" stop-color="#5a4309"/></radialGradient></defs><ellipse cx="50" cy="72" rx="10" ry="14" fill="url(#azalea-seed)"/><ellipse cx="47" cy="68" rx="3" ry="5" fill="rgba(255,255,255,0.2)" transform="rotate(-20 47 68)"/></svg>`,
+                sprout: `<svg viewBox="0 0 100 100"><defs><linearGradient id="azalea-stem1" x1="0%" y1="100%" x2="0%" y2="0%"><stop offset="0%" stop-color="#2d5a27"/><stop offset="100%" stop-color="#4caf50"/></linearGradient></defs><path d="M50 82 C52 70 50 60 50 52" stroke="url(#azalea-stem1)" stroke-width="4" fill="none" stroke-linecap="round"/><ellipse cx="44" cy="52" rx="10" ry="5" fill="#66bb6a" transform="rotate(-38 44 52)"/><ellipse cx="56" cy="54" rx="9" ry="4" fill="#81c784" transform="rotate(32 56 54)"/></svg>`,
+                leaf: `<svg viewBox="0 0 100 100"><defs><linearGradient id="azalea-stem2" x1="0%" y1="100%" x2="0%" y2="0%"><stop offset="0%" stop-color="#1b4d1a"/><stop offset="100%" stop-color="#388e3c"/></linearGradient></defs><path d="M50 88 C50 68 50 55 50 40" stroke="url(#azalea-stem2)" stroke-width="5" fill="none" stroke-linecap="round"/><ellipse cx="35" cy="58" rx="18" ry="10" fill="#4caf50" transform="rotate(-45 35 58)"/><ellipse cx="65" cy="56" rx="17" ry="9" fill="#66bb6a" transform="rotate(42 65 56)"/><ellipse cx="40" cy="42" rx="14" ry="7" fill="#81c784" transform="rotate(-32 40 42)"/><ellipse cx="60" cy="40" rx="13" ry="6" fill="#a5d6a7" transform="rotate(28 60 40)"/></svg>`,
+                bud: `<svg viewBox="0 0 100 100"><defs><linearGradient id="azalea-stem3" x1="0%" y1="100%" x2="0%" y2="0%"><stop offset="0%" stop-color="#1b4d1a"/><stop offset="100%" stop-color="#388e3c"/></linearGradient><radialGradient id="azalea-bud" cx="50%" cy="30%"><stop offset="0%" stop-color="#f8bbd9"/><stop offset="60%" stop-color="#e91e63"/><stop offset="100%" stop-color="#880e4f"/></radialGradient></defs><path d="M50 92 C50 68 50 50 50 35" stroke="url(#azalea-stem3)" stroke-width="5" fill="none" stroke-linecap="round"/><ellipse cx="32" cy="62" rx="18" ry="10" fill="#4caf50" transform="rotate(-48 32 62)" opacity="0.9"/><ellipse cx="68" cy="60" rx="17" ry="9" fill="#66bb6a" transform="rotate(45 68 60)" opacity="0.9"/><circle cx="50" cy="22" r="14" fill="url(#azalea-bud)"/><circle cx="46" cy="17" r="5" fill="rgba(255,255,255,0.3)"/></svg>`,
+                bloom: `<svg viewBox="0 0 100 100"><defs><linearGradient id="azalea-stem4" x1="0%" y1="100%" x2="0%" y2="0%"><stop offset="0%" stop-color="#1b4d1a"/><stop offset="100%" stop-color="#388e3c"/></linearGradient><radialGradient id="azalea-center" cx="50%" cy="50%"><stop offset="0%" stop-color="#ffeb3b"/><stop offset="100%" stop-color="#ffc107"/></radialGradient><linearGradient id="azalea-petal" x1="0%" y1="100%" x2="0%" y2="0%"><stop offset="0%" stop-color="#ff4081"/><stop offset="100%" stop-color="#f50057"/></linearGradient></defs><path d="M50 95 C50 70 50 52 50 38" stroke="url(#azalea-stem4)" stroke-width="5" fill="none" stroke-linecap="round"/><ellipse cx="30" cy="60" rx="20" ry="11" fill="#4caf50" transform="rotate(-50 30 60)" opacity="0.9"/><ellipse cx="70" cy="58" rx="19" ry="10" fill="#66bb6a" transform="rotate(48 70 58)" opacity="0.9"/><g transform="translate(50,24)"><ellipse rx="8" ry="13" fill="url(#azalea-petal)" transform="rotate(0)"/><ellipse rx="8" ry="13" fill="url(#azalea-petal)" transform="rotate(72)"/><ellipse rx="8" ry="13" fill="url(#azalea-petal)" transform="rotate(144)"/><ellipse rx="8" ry="13" fill="url(#azalea-petal)" transform="rotate(216)"/><ellipse rx="8" ry="13" fill="url(#azalea-petal)" transform="rotate(288)"/></g><circle cx="50" cy="24" r="7" fill="url(#azalea-center)"/><circle cx="48" cy="21" r="3" fill="rgba(255,255,255,0.3)"/></svg>`,
+                flourish: `<svg viewBox="0 0 100 100"><defs><linearGradient id="azalea-stem5" x1="0%" y1="100%" x2="0%" y2="0%"><stop offset="0%" stop-color="#1b4d1a"/><stop offset="100%" stop-color="#43a047"/></linearGradient><radialGradient id="azalea-center2" cx="50%" cy="50%"><stop offset="0%" stop-color="#ffeb3b"/><stop offset="100%" stop-color="#ff6f00"/></radialGradient><linearGradient id="azalea-petal2" x1="0%" y1="100%" x2="0%" y2="0%"><stop offset="0%" stop-color="#ff1744"/><stop offset="100%" stop-color="#b71c1c"/></linearGradient></defs><path d="M50 96 C50 72 50 52 50 36" stroke="url(#azalea-stem5)" stroke-width="6" fill="none" stroke-linecap="round"/><ellipse cx="28" cy="62" rx="22" ry="12" fill="#388e3c" transform="rotate(-55 28 62)" opacity="0.95"/><ellipse cx="72" cy="60" rx="21" ry="11" fill="#43a047" transform="rotate(52 72 60)" opacity="0.95"/><g transform="translate(50,22)"><ellipse rx="9" ry="15" fill="url(#azalea-petal2)" transform="rotate(0)"/><ellipse rx="9" ry="15" fill="url(#azalea-petal2)" transform="rotate(60)"/><ellipse rx="9" ry="15" fill="url(#azalea-petal2)" transform="rotate(120)"/><ellipse rx="9" ry="15" fill="url(#azalea-petal2)" transform="rotate(180)"/><ellipse rx="9" ry="15" fill="url(#azalea-petal2)" transform="rotate(240)"/><ellipse rx="9" ry="15" fill="url(#azalea-petal2)" transform="rotate(300)"/></g><circle cx="50" cy="22" r="8" fill="url(#azalea-center2)"/><circle cx="47" cy="19" r="3" fill="rgba(255,255,255,0.3)"/></svg>`
             },
             lavender: {
-                seed: `<svg viewBox="0 0 100 100"><ellipse cx="50" cy="70" rx="8" ry="12" fill="#5d4037"/></svg>`,
-                sprout: `<svg viewBox="0 0 100 100"><path d="M50 80 Q50 60 50 50" stroke="#4caf50" stroke-width="3" fill="none"/><ellipse cx="45" cy="50" rx="8" ry="5" fill="#66bb6a" transform="rotate(-30 45 50)"/><ellipse cx="55" cy="50" rx="8" ry="5" fill="#66bb6a" transform="rotate(30 55 50)"/></svg>`,
-                leaf: `<svg viewBox="0 0 100 100"><path d="M50 85 Q50 50 50 35" stroke="#4caf50" stroke-width="4" fill="none"/><ellipse cx="35" cy="55" rx="15" ry="8" fill="#66bb6a" transform="rotate(-40 35 55)"/><ellipse cx="65" cy="55" rx="15" ry="8" fill="#66bb6a" transform="rotate(40 65 55)"/><ellipse cx="40" cy="40" rx="12" ry="6" fill="#81c784" transform="rotate(-30 40 40)"/><ellipse cx="60" cy="40" rx="12" ry="6" fill="#81c784" transform="rotate(30 60 40)"/></svg>`,
-                bud: `<svg viewBox="0 0 100 100"><path d="M50 90 Q50 50 50 25" stroke="#4caf50" stroke-width="4" fill="none"/><ellipse cx="35" cy="55" rx="15" ry="8" fill="#66bb6a" transform="rotate(-40 35 55)"/><ellipse cx="65" cy="55" rx="15" ry="8" fill="#66bb6a" transform="rotate(40 65 55)"/><ellipse cx="50" cy="20" rx="4" ry="8" fill="#9575cd"/><ellipse cx="50" cy="28" rx="4" ry="6" fill="#9575cd"/></svg>`,
-                bloom: `<svg viewBox="0 0 100 100"><path d="M50 95 Q50 50 50 20" stroke="#4caf50" stroke-width="5" fill="none"/><ellipse cx="35" cy="55" rx="15" ry="8" fill="#66bb6a" transform="rotate(-40 35 55)"/><ellipse cx="65" cy="55" rx="15" ry="8" fill="#66bb6a" transform="rotate(40 65 55)"/><g fill="#9575cd"><ellipse cx="50" cy="15" rx="4" ry="6"/><ellipse cx="50" cy="23" rx="5" ry="7"/><ellipse cx="50" cy="32" rx="5" ry="7"/><ellipse cx="50" cy="42" rx="4" ry="6"/></g><g fill="#7e57c2"><ellipse cx="46" cy="19" rx="3" ry="5"/><ellipse cx="54" cy="19" rx="3" ry="5"/><ellipse cx="46" cy="28" rx="3" ry="5"/><ellipse cx="54" cy="28" rx="3" ry="5"/></g></svg>`,
-                flourish: `<svg viewBox="0 0 100 100"><path d="M50 95 Q50 50 50 15" stroke="#2e7d32" stroke-width="6" fill="none"/><ellipse cx="30" cy="55" rx="18" ry="10" fill="#43a047" transform="rotate(-45 30 55)"/><ellipse cx="70" cy="55" rx="18" ry="10" fill="#43a047" transform="rotate(45 70 55)"/><g fill="#7e57c2"><ellipse cx="50" cy="10" rx="5" ry="7"/><ellipse cx="50" cy="18" rx="6" ry="8"/><ellipse cx="50" cy="28" rx="6" ry="8"/><ellipse cx="50" cy="39" rx="5" ry="7"/><ellipse cx="50" cy="50" rx="4" ry="6"/></g><g fill="#673ab7"><ellipse cx="44" cy="14" rx="3" ry="5"/><ellipse cx="56" cy="14" rx="3" ry="5"/><ellipse cx="43" cy="24" rx="4" ry="6"/><ellipse cx="57" cy="24" rx="4" ry="6"/><ellipse cx="44" cy="34" rx="3" ry="5"/><ellipse cx="56" cy="34" rx="3" ry="5"/></g></svg>`
+                seed: `<svg viewBox="0 0 100 100"><defs><radialGradient id="lavender-seed" cx="40%" cy="30%"><stop offset="0%" stop-color="#8b6914"/><stop offset="100%" stop-color="#5a4309"/></radialGradient></defs><ellipse cx="50" cy="72" rx="10" ry="14" fill="url(#lavender-seed)"/><ellipse cx="47" cy="68" rx="3" ry="5" fill="rgba(255,255,255,0.2)" transform="rotate(-20 47 68)"/></svg>`,
+                sprout: `<svg viewBox="0 0 100 100"><defs><linearGradient id="lavender-stem1" x1="0%" y1="100%" x2="0%" y2="0%"><stop offset="0%" stop-color="#2d5a27"/><stop offset="100%" stop-color="#4caf50"/></linearGradient></defs><path d="M50 82 C52 70 50 60 50 52" stroke="url(#lavender-stem1)" stroke-width="4" fill="none" stroke-linecap="round"/><ellipse cx="44" cy="52" rx="10" ry="5" fill="#66bb6a" transform="rotate(-35 44 52)"/><ellipse cx="56" cy="54" rx="9" ry="4" fill="#81c784" transform="rotate(30 56 54)"/></svg>`,
+                leaf: `<svg viewBox="0 0 100 100"><defs><linearGradient id="lavender-stem2" x1="0%" y1="100%" x2="0%" y2="0%"><stop offset="0%" stop-color="#1b4d1a"/><stop offset="100%" stop-color="#388e3c"/></linearGradient></defs><path d="M50 88 C50 68 50 55 50 40" stroke="url(#lavender-stem2)" stroke-width="5" fill="none" stroke-linecap="round"/><ellipse cx="35" cy="58" rx="18" ry="10" fill="#4caf50" transform="rotate(-45 35 58)"/><ellipse cx="65" cy="56" rx="17" ry="9" fill="#66bb6a" transform="rotate(42 65 56)"/><ellipse cx="40" cy="42" rx="14" ry="7" fill="#81c784" transform="rotate(-32 40 42)"/><ellipse cx="60" cy="40" rx="13" ry="6" fill="#a5d6a7" transform="rotate(28 60 40)"/></svg>`,
+                bud: `<svg viewBox="0 0 100 100"><defs><linearGradient id="lavender-stem3" x1="0%" y1="100%" x2="0%" y2="0%"><stop offset="0%" stop-color="#1b4d1a"/><stop offset="100%" stop-color="#388e3c"/></linearGradient><linearGradient id="lavender-bud" x1="0%" y1="100%" x2="0%" y2="0%"><stop offset="0%" stop-color="#9575cd"/><stop offset="100%" stop-color="#7e57c2"/></linearGradient></defs><path d="M50 92 C50 68 50 50 50 25" stroke="url(#lavender-stem3)" stroke-width="4" fill="none" stroke-linecap="round"/><ellipse cx="35" cy="58" rx="18" ry="10" fill="#4caf50" transform="rotate(-45 35 58)" opacity="0.9"/><ellipse cx="65" cy="56" rx="17" ry="9" fill="#66bb6a" transform="rotate(42 65 56)" opacity="0.9"/><ellipse cx="50" cy="18" rx="5" ry="9" fill="url(#lavender-bud)"/><ellipse cx="50" cy="27" rx="5" ry="7" fill="#9575cd"/><ellipse cx="50" cy="35" rx="4" ry="6" fill="#7e57c2"/></svg>`,
+                bloom: `<svg viewBox="0 0 100 100"><defs><linearGradient id="lavender-stem4" x1="0%" y1="100%" x2="0%" y2="0%"><stop offset="0%" stop-color="#1b4d1a"/><stop offset="100%" stop-color="#388e3c"/></linearGradient><linearGradient id="lavender-flower" x1="0%" y1="100%" x2="0%" y2="0%"><stop offset="0%" stop-color="#7e57c2"/><stop offset="100%" stop-color="#b39ddb"/></linearGradient></defs><path d="M50 95 C50 70 50 52 50 20" stroke="url(#lavender-stem4)" stroke-width="5" fill="none" stroke-linecap="round"/><ellipse cx="32" cy="62" rx="18" ry="10" fill="#4caf50" transform="rotate(-48 32 62)" opacity="0.9"/><ellipse cx="68" cy="60" rx="17" ry="9" fill="#66bb6a" transform="rotate(45 68 60)" opacity="0.9"/><g fill="#9575cd"><ellipse cx="50" cy="14" rx="5" ry="7"/><ellipse cx="50" cy="23" rx="6" ry="8"/><ellipse cx="50" cy="33" rx="6" ry="8"/><ellipse cx="50" cy="44" rx="5" ry="7"/><ellipse cx="50" cy="54" rx="4" ry="5"/></g><g fill="#7e57c2"><ellipse cx="45" cy="18" rx="3" ry="5"/><ellipse cx="55" cy="18" rx="3" ry="5"/><ellipse cx="44" cy="28" rx="4" ry="6"/><ellipse cx="56" cy="28" rx="4" ry="6"/><ellipse cx="45" cy="39" rx="3" ry="5"/><ellipse cx="55" cy="39" rx="3" ry="5"/></g></svg>`,
+                flourish: `<svg viewBox="0 0 100 100"><defs><linearGradient id="lavender-stem5" x1="0%" y1="100%" x2="0%" y2="0%"><stop offset="0%" stop-color="#1b4d1a"/><stop offset="100%" stop-color="#43a047"/></linearGradient><linearGradient id="lavender-flower2" x1="0%" y1="100%" x2="0%" y2="0%"><stop offset="0%" stop-color="#673ab7"/><stop offset="50%" stop-color="#7e57c2"/><stop offset="100%" stop-color="#d1c4e9"/></linearGradient></defs><path d="M50 96 C50 72 50 52 50 15" stroke="url(#lavender-stem5)" stroke-width="6" fill="none" stroke-linecap="round"/><ellipse cx="28" cy="62" rx="22" ry="12" fill="#388e3c" transform="rotate(-55 28 62)" opacity="0.95"/><ellipse cx="72" cy="60" rx="21" ry="11" fill="#43a047" transform="rotate(52 72 60)" opacity="0.95"/><g fill="#7e57c2"><ellipse cx="50" cy="10" rx="6" ry="8"/><ellipse cx="50" cy="20" rx="7" ry="9"/><ellipse cx="50" cy="31" rx="7" ry="9"/><ellipse cx="50" cy="43" rx="6" ry="8"/><ellipse cx="50" cy="54" rx="5" ry="6"/></g><g fill="#673ab7"><ellipse cx="44" cy="15" rx="4" ry="6"/><ellipse cx="56" cy="15" rx="4" ry="6"/><ellipse cx="43" cy="25" rx="4" ry="6"/><ellipse cx="57" cy="25" rx="4" ry="6"/><ellipse cx="44" cy="37" rx="4" ry="6"/><ellipse cx="56" cy="37" rx="4" ry="6"/><ellipse cx="45" cy="48" rx="3" ry="5"/><ellipse cx="55" cy="48" rx="3" ry="5"/></g></svg>`
             },
             orchid: {
-                seed: `<svg viewBox="0 0 100 100"><ellipse cx="50" cy="70" rx="8" ry="12" fill="#5d4037"/></svg>`,
-                sprout: `<svg viewBox="0 0 100 100"><path d="M50 80 Q50 60 50 50" stroke="#4caf50" stroke-width="3" fill="none"/><ellipse cx="45" cy="50" rx="8" ry="5" fill="#66bb6a" transform="rotate(-30 45 50)"/><ellipse cx="55" cy="50" rx="8" ry="5" fill="#66bb6a" transform="rotate(30 55 50)"/></svg>`,
-                leaf: `<svg viewBox="0 0 100 100"><path d="M50 85 Q50 50 50 40" stroke="#4caf50" stroke-width="4" fill="none"/><ellipse cx="30" cy="60" rx="20" ry="10" fill="#66bb6a" transform="rotate(-30 30 60)"/><ellipse cx="70" cy="60" rx="20" ry="10" fill="#66bb6a" transform="rotate(30 70 60)"/></svg>`,
-                bud: `<svg viewBox="0 0 100 100"><path d="M50 90 Q50 55 50 40" stroke="#4caf50" stroke-width="5" fill="none"/><ellipse cx="30" cy="60" rx="20" ry="10" fill="#66bb6a" transform="rotate(-30 30 60)"/><ellipse cx="70" cy="60" rx="20" ry="10" fill="#66bb6a" transform="rotate(30 70 60)"/><ellipse cx="50" cy="28" rx="8" ry="15" fill="#e1bee7"/><ellipse cx="42" cy="30" rx="6" ry="12" fill="#ce93d8" transform="rotate(-15 42 30)"/><ellipse cx="58" cy="30" rx="6" ry="12" fill="#ce93d8" transform="rotate(15 58 30)"/></svg>`,
-                bloom: `<svg viewBox="0 0 100 100"><path d="M50 95 Q50 60 50 45" stroke="#4caf50" stroke-width="5" fill="none"/><ellipse cx="30" cy="60" rx="20" ry="12" fill="#66bb6a" transform="rotate(-30 30 60)"/><ellipse cx="70" cy="60" rx="20" ry="12" fill="#66bb6a" transform="rotate(30 70 60)"/><ellipse cx="50" cy="25" rx="8" ry="18" fill="#e1bee7"/><ellipse cx="38" cy="28" rx="6" ry="14" fill="#ce93d8" transform="rotate(-20 38 28)"/><ellipse cx="62" cy="28" rx="6" ry="14" fill="#ce93d8" transform="rotate(20 62 28)"/><ellipse cx="30" cy="35" rx="5" ry="12" fill="#ba68c8" transform="rotate(-45 30 35)"/><ellipse cx="70" cy="35" rx="5" ry="12" fill="#ba68c8" transform="rotate(45 70 35)"/><circle cx="50" cy="28" r="5" fill="#ffeb3b"/></svg>`,
-                flourish: `<svg viewBox="0 0 100 100"><path d="M50 95 Q50 60 50 45" stroke="#2e7d32" stroke-width="6" fill="none"/><ellipse cx="25" cy="60" rx="22" ry="14" fill="#43a047" transform="rotate(-30 25 60)"/><ellipse cx="75" cy="60" rx="22" ry="14" fill="#43a047" transform="rotate(30 75 60)"/><ellipse cx="50" cy="22" rx="10" ry="20" fill="#e1bee7"/><ellipse cx="36" cy="26" rx="7" ry="16" fill="#ce93d8" transform="rotate(-20 36 26)"/><ellipse cx="64" cy="26" rx="7" ry="16" fill="#ce93d8" transform="rotate(20 64 26)"/><ellipse cx="26" cy="34" rx="6" ry="14" fill="#ba68c8" transform="rotate(-50 26 34)"/><ellipse cx="74" cy="34" rx="6" ry="14" fill="#ba68c8" transform="rotate(50 74 34)"/><circle cx="50" cy="26" r="6" fill="#ffeb3b"/></svg>`
+                seed: `<svg viewBox="0 0 100 100"><defs><radialGradient id="orchid-seed" cx="40%" cy="30%"><stop offset="0%" stop-color="#8b6914"/><stop offset="100%" stop-color="#5a4309"/></radialGradient></defs><ellipse cx="50" cy="72" rx="10" ry="14" fill="url(#orchid-seed)"/><ellipse cx="47" cy="68" rx="3" ry="5" fill="rgba(255,255,255,0.2)" transform="rotate(-20 47 68)"/></svg>`,
+                sprout: `<svg viewBox="0 0 100 100"><defs><linearGradient id="orchid-stem1" x1="0%" y1="100%" x2="0%" y2="0%"><stop offset="0%" stop-color="#2d5a27"/><stop offset="100%" stop-color="#4caf50"/></linearGradient></defs><path d="M50 82 C52 70 50 60 50 52" stroke="url(#orchid-stem1)" stroke-width="4" fill="none" stroke-linecap="round"/><ellipse cx="44" cy="52" rx="10" ry="5" fill="#66bb6a" transform="rotate(-35 44 52)"/><ellipse cx="56" cy="54" rx="9" ry="4" fill="#81c784" transform="rotate(30 56 54)"/></svg>`,
+                leaf: `<svg viewBox="0 0 100 100"><defs><linearGradient id="orchid-stem2" x1="0%" y1="100%" x2="0%" y2="0%"><stop offset="0%" stop-color="#1b4d1a"/><stop offset="100%" stop-color="#388e3c"/></linearGradient></defs><path d="M50 88 C50 68 50 55 50 42" stroke="url(#orchid-stem2)" stroke-width="5" fill="none" stroke-linecap="round"/><ellipse cx="30" cy="60" rx="22" ry="12" fill="#4caf50" transform="rotate(-32 30 60)"/><ellipse cx="70" cy="58" rx="21" ry="11" fill="#66bb6a" transform="rotate(28 70 58)"/></svg>`,
+                bud: `<svg viewBox="0 0 100 100"><defs><linearGradient id="orchid-stem3" x1="0%" y1="100%" x2="0%" y2="0%"><stop offset="0%" stop-color="#1b4d1a"/><stop offset="100%" stop-color="#388e3c"/></linearGradient><linearGradient id="orchid-bud" x1="0%" y1="100%" x2="0%" y2="0%"><stop offset="0%" stop-color="#e1bee7"/><stop offset="100%" stop-color="#ce93d8"/></linearGradient></defs><path d="M50 92 C50 68 50 55 50 42" stroke="url(#orchid-stem3)" stroke-width="5" fill="none" stroke-linecap="round"/><ellipse cx="30" cy="60" rx="22" ry="12" fill="#4caf50" transform="rotate(-32 30 60)" opacity="0.9"/><ellipse cx="70" cy="58" rx="21" ry="11" fill="#66bb6a" transform="rotate(28 70 58)" opacity="0.9"/><ellipse cx="50" cy="28" rx="9" ry="16" fill="url(#orchid-bud)"/><ellipse cx="42" cy="30" rx="7" ry="13" fill="#ce93d8" transform="rotate(-15 42 30)"/><ellipse cx="58" cy="30" rx="7" ry="13" fill="#ce93d8" transform="rotate(15 58 30)"/><circle cx="48" cy="24" r="3" fill="rgba(255,255,255,0.4)"/></svg>`,
+                bloom: `<svg viewBox="0 0 100 100"><defs><linearGradient id="orchid-stem4" x1="0%" y1="100%" x2="0%" y2="0%"><stop offset="0%" stop-color="#1b4d1a"/><stop offset="100%" stop-color="#388e3c"/></linearGradient><radialGradient id="orchid-center" cx="50%" cy="50%"><stop offset="0%" stop-color="#ffeb3b"/><stop offset="100%" stop-color="#ffc107"/></radialGradient><linearGradient id="orchid-petal" x1="0%" y1="100%" x2="0%" y2="0%"><stop offset="0%" stop-color="#e1bee7"/><stop offset="100%" stop-color="#f8bbd9"/></linearGradient></defs><path d="M50 95 C50 70 50 55 50 45" stroke="url(#orchid-stem4)" stroke-width="5" fill="none" stroke-linecap="round"/><ellipse cx="28" cy="62" rx="22" ry="12" fill="#4caf50" transform="rotate(-35 28 62)" opacity="0.9"/><ellipse cx="72" cy="60" rx="21" ry="11" fill="#66bb6a" transform="rotate(32 72 60)" opacity="0.9"/><ellipse cx="50" cy="24" rx="9" ry="19" fill="url(#orchid-petal)"/><ellipse cx="38" cy="27" rx="7" ry="15" fill="#f8bbd9" transform="rotate(-18 38 27)"/><ellipse cx="62" cy="27" rx="7" ry="15" fill="#f8bbd9" transform="rotate(18 62 27)"/><ellipse cx="28" cy="35" rx="6" ry="13" fill="#ba68c8" transform="rotate(-48 28 35)"/><ellipse cx="72" cy="35" rx="6" ry="13" fill="#ba68c8" transform="rotate(48 72 35)"/><circle cx="50" cy="27" r="6" fill="url(#orchid-center)"/><circle cx="48" cy="24" r="2" fill="rgba(255,255,255,0.4)"/></svg>`,
+                flourish: `<svg viewBox="0 0 100 100"><defs><linearGradient id="orchid-stem5" x1="0%" y1="100%" x2="0%" y2="0%"><stop offset="0%" stop-color="#1b4d1a"/><stop offset="100%" stop-color="#43a047"/></linearGradient><radialGradient id="orchid-center2" cx="50%" cy="50%"><stop offset="0%" stop-color="#ffeb3b"/><stop offset="100%" stop-color="#ff8f00"/></radialGradient><linearGradient id="orchid-petal2" x1="0%" y1="100%" x2="0%" y2="0%"><stop offset="0%" stop-color="#e1bee7"/><stop offset="50%" stop-color="#f8bbd9"/><stop offset="100%" stop-color="#f48fb1"/></linearGradient></defs><path d="M50 96 C50 72 50 58 50 48" stroke="url(#orchid-stem5)" stroke-width="6" fill="none" stroke-linecap="round"/><ellipse cx="26" cy="62" rx="24" ry="14" fill="#388e3c" transform="rotate(-38 26 62)" opacity="0.95"/><ellipse cx="74" cy="60" rx="23" ry="13" fill="#43a047" transform="rotate(35 74 60)" opacity="0.95"/><ellipse cx="50" cy="20" rx="11" ry="21" fill="url(#orchid-petal2)"/><ellipse cx="36" cy="24" rx="8" ry="17" fill="#f8bbd9" transform="rotate(-18 36 24)"/><ellipse cx="64" cy="24" rx="8" ry="17" fill="#f8bbd9" transform="rotate(18 64 24)"/><ellipse cx="24" cy="34" rx="7" ry="15" fill="#ba68c8" transform="rotate(-50 24 34)"/><ellipse cx="76" cy="34" rx="7" ry="15" fill="#ba68c8" transform="rotate(50 76 34)"/><ellipse cx="50" cy="24" r="8" fill="url(#orchid-center2)"/><circle cx="47" cy="21" r="3" fill="rgba(255,255,255,0.4)"/></svg>`
             }
         };
 
@@ -1225,14 +1555,14 @@
                 if (flower) {
                     const flowerData = FLOWERS.find(f => f.id === flower);
                     slots.push(`
-                        <div class="garden-slot filled">
+                        <div class="garden-slot">
                             ${FLOWER_SVGS[flower][state.garden.includes(flower) ? 'flourish' : 'bloom']}
                             <span>${flowerData.name}</span>
                         </div>
                     `);
                 } else {
                     slots.push(`
-                        <div class="garden-slot">
+                        <div class="garden-slot empty">
                             <svg viewBox="0 0 50 50"><circle cx="25" cy="25" r="15" fill="none" stroke="currentColor" stroke-width="1" stroke-dasharray="3"/></svg>
                             <span>空位</span>
                         </div>

@@ -1,0 +1,304 @@
+/* 水墨手绘风格 - 心流花园 */
+
+/* 全局水墨风格 */
+:root {
+    --ink-black: #2c2c2c;
+    --ink-gray: #8a8a8a;
+    --ink-light: #d9d9d9;
+    --paper-white: #f5f0e8;
+    --paper-cream: #ede4d4;
+    --ink-wash: #4a4a4a;
+    --accent-red: #c41e3a;
+    --accent-green: #5a7247;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    background: var(--paper-white);
+    background-image: 
+        radial-gradient(circle at 20% 50%, rgba(200, 200, 200, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(200, 200, 200, 0.1) 0%, transparent 50%);
+    font-family: "STKaiti", "KaiTi", "SimSun", serif;
+    color: var(--ink-black);
+}
+
+/* 水墨纹理背景 */
+.screen {
+    background: var(--paper-white);
+    position: relative;
+}
+
+.screen::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='1' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+    opacity: 0.5;
+    pointer-events: none;
+}
+
+/* 标题水墨风格 */
+h1, h2, h3 {
+    color: var(--ink-black);
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+    font-weight: normal;
+}
+
+/* 按钮水墨风格 */
+.btn {
+    background: transparent;
+    border: 2px solid var(--ink-black);
+    color: var(--ink-black);
+    border-radius: 0;
+    font-family: "STKaiti", "KaiTi", serif;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(44, 44, 44, 0.1), transparent);
+    transition: left 0.5s;
+}
+
+.btn:hover::before {
+    left: 100%;
+}
+
+.btn:hover {
+    background: var(--ink-black);
+    color: var(--paper-white);
+    transform: translateY(-2px);
+    box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.btn:active {
+    transform: translateY(0);
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* 卡片水墨风格 */
+.flower-card, .achievement-card {
+    background: var(--paper-cream);
+    border: 1px solid var(--ink-light);
+    border-radius: 0;
+    box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.1);
+    position: relative;
+}
+
+.flower-card::before, .achievement-card::before {
+    content: '';
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    right: 5px;
+    bottom: 5px;
+    border: 1px solid var(--ink-light);
+    pointer-events: none;
+}
+
+/* 花朵容器水墨风格 */
+.flower-container {
+    background: var(--paper-cream);
+    border: 2px solid var(--ink-black);
+    border-radius: 0;
+    position: relative;
+}
+
+.flower-container::after {
+    content: '';
+    position: absolute;
+    top: -10px;
+    left: -10px;
+    right: -10px;
+    bottom: -10px;
+    border: 1px solid var(--ink-light);
+    pointer-events: none;
+}
+
+/* 水墨滚动条 */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--paper-cream);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--ink-gray);
+    border-radius: 0;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--ink-black);
+}
+
+/* 输入框水墨风格 */
+input, select, textarea {
+    background: var(--paper-cream);
+    border: 1px solid var(--ink-gray);
+    border-radius: 0;
+    color: var(--ink-black);
+    font-family: "STKaiti", "KaiTi", serif;
+}
+
+input:focus, select:focus, textarea:focus {
+    outline: none;
+    border-color: var(--ink-black);
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* 水墨动画效果 */
+@keyframes inkSpread {
+    0% {
+        opacity: 0;
+        transform: scale(0.8);
+        filter: blur(10px);
+    }
+    50% {
+        opacity: 0.5;
+        filter: blur(5px);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+        filter: blur(0);
+    }
+}
+
+.screen.active {
+    animation: inkSpread 0.5s ease-out;
+}
+
+/* 生长阶段水墨效果 */
+@keyframes growInk {
+    0% {
+        transform: scale(0.5);
+        opacity: 0;
+    }
+    50% {
+        transform: scale(1.1);
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.flower-stage {
+    animation: growInk 0.8s ease-out;
+}
+
+/* 水墨装饰元素 */
+.ink-dot {
+    width: 8px;
+    height: 8px;
+    background: var(--ink-black);
+    border-radius: 50%;
+    display: inline-block;
+    margin: 0 5px;
+}
+
+.ink-line {
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--ink-black), transparent);
+    margin: 20px 0;
+}
+
+/* 暗色模式水墨风格 */
+body.dark-mode {
+    --paper-white: #1a1a1a;
+    --paper-cream: #2c2c2c;
+    --ink-black: #e0e0e0;
+    --ink-gray: #8a8a8a;
+    --ink-light: #4a4a4a;
+}
+
+body.dark-mode .screen::before {
+    opacity: 0.1;
+}
+
+body.dark-mode .btn {
+    border-color: var(--ink-black);
+    color: var(--ink-black);
+}
+
+body.dark-mode .btn:hover {
+    background: var(--ink-black);
+    color: var(--paper-white);
+}
+
+/* 水墨加载动画 */
+@keyframes inkDrop {
+    0% {
+        transform: scale(0);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(4);
+        opacity: 0;
+    }
+}
+
+.loading::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 20px;
+    height: 20px;
+    margin: -10px 0 0 -10px;
+    border-radius: 50%;
+    background: var(--ink-black);
+    animation: inkDrop 1.5s ease-out infinite;
+}
+
+/* 水墨印章效果 */
+@keyframes stampEffect {
+    0% {
+        transform: scale(1.2) rotate(-5deg);
+        opacity: 0;
+    }
+    50% {
+        transform: scale(0.9) rotate(2deg);
+        opacity: 0.7;
+    }
+    100% {
+        transform: scale(1) rotate(0);
+        opacity: 1;
+    }
+}
+
+.achievement-unlocked {
+    animation: stampEffect 0.5s ease-out;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .btn {
+        padding: 10px 20px;
+        font-size: 14px;
+    }
+    
+    h1 {
+        font-size: 24px;
+    }
+    
+    h2 {
+        font-size: 20px;
+    }
+}

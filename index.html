@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>心流花园 - MindFlower v0.0.1</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/flowers.css">
+    <link rel="stylesheet" href="css/animations.css">
+</head>
+<body>
+    <div id="app">
+        <!-- 启动画面 -->
+        <div id="splash-screen" class="screen active">
+            <div class="splash-content">
+                <div class="splash-flower">🌱</div>
+                <h1 class="app-title">心流花园</h1>
+                <p class="app-subtitle">专注时光，花开相伴</p>
+                <div class="loading-dots">
+                    <span></span><span></span><span></span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 首页 - 我的花园 -->
+        <div id="home-screen" class="screen">
+            <header class="app-header">
+                <div class="header-left">
+                    <span class="header-icon">🌸</span>
+                    <h2>我的花园</h2>
+                </div>
+                <div class="header-right">
+                    <button class="icon-btn" onclick="app.toggleDarkMode()">🌙</button>
+                    <button class="icon-btn" onclick="app.openSettings()">⚙️</button>
+                </div>
+            </header>
+
+            <div class="stats-bar">
+                <div class="stat-item">
+                    <span class="stat-value" id="total-flowers">0</span>
+                    <span class="stat-label">花朵</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-value" id="total-focus-time">0</span>
+                    <span class="stat-label">专注(h)</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-value" id="achievement-count">0</span>
+                    <span class="stat-label">成就</span>
+                </div>
+            </div>
+
+            <div class="garden-grid" id="garden-grid">
+                <!-- 花朵卡片会动态插入这里 -->
+                <div class="empty-garden">
+                    <span class="empty-icon">🌱</span>
+                    <p>还没有花朵</p>
+                    <p>开始专注，培育你的第一朵花吧！</p>
+                </div>
+            </div>
+
+            <button class="fab-button" onclick="app.showScreen('select-flower-screen')">
+                <span>🌱</span>
+            </button>
+        </div>
+
+        <!-- 选择花朵屏幕 -->
+        <div id="select-flower-screen" class="screen">
+            <header class="app-header">
+                <button class="back-btn" onclick="app.showScreen('home-screen')">←</button>
+                <h2>选择花朵</h2>
+                <div class="header-right"></div>
+            </header>
+
+            <div class="flower-list" id="flower-list">
+                <!-- 花朵选项会动态插入这里 -->
+            </div>
+        </div>
+
+        <!-- 专注屏幕 -->
+        <div id="focus-screen" class="screen">
+            <div class="focus-container">
+                <div class="focus-flower-container">
+                    <div class="focus-flower" id="focus-flower">🌱</div>
+                    <div class="growth-stage-label" id="growth-stage-label">种子阶段</div>
+                </div>
+
+                <div class="timer-container">
+                    <div class="timer-ring">
+                        <svg class="timer-svg" viewBox="0 0 100 100">
+                            <circle class="timer-bg" cx="50" cy="50" r="45"></circle>
+                            <circle class="timer-progress" id="timer-progress" cx="50" cy="50" r="45"></circle>
+                        </svg>
+                        <div class="timer-display">
+                            <span id="timer-minutes">25</span>:<span id="timer-seconds">00</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="focus-controls">
+                    <button class="control-btn secondary" onclick="app.pauseFocus()">⏸️ 暂停</button>
+                    <button class="control-btn primary" onclick="app.startFocus()">▶️ 开始</button>
+                    <button class="control-btn danger" onclick="app.stopFocus()">⏹️ 放弃</button>
+                </div>
+
+                <div class="weather-info" id="weather-info">
+                    <span>☀️ 晴天</span>
+                    <span class="growth-bonus">生长 +10%</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 花朵详情屏幕 -->
+        <div id="flower-detail-screen" class="screen">
+            <header class="app-header">
+                <button class="back-btn" onclick="app.showScreen('home-screen')">←</button>
+                <h2 id="detail-flower-name">花朵详情</h2>
+                <div class="header-right"></div>
+            </header>
+
+            <div class="flower-detail-content">
+                <div class="detail-flower-display" id="detail-flower-display">🌻</div>
+                <div class="detail-info">
+                    <div class="detail-row">
+                        <span class="detail-label">品种</span>
+                        <span class="detail-value" id="detail-variety">向日葵</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">生长阶段</span>
+                        <span class="detail-value" id="detail-stage">种子</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">专注时长</span>
+                        <span class="detail-value" id="detail-focus-time">0 分钟</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">种植日期</span>
+                        <span class="detail-value" id="detail-plant-date">2026-05-02</span>
+                    </div>
+                </div>
+
+                <div class="growth-progress">
+                    <h3>生长进度</h3>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="detail-progress"></div>
+                    </div>
+                    <div class="stage-markers">
+                        <span>种子</span>
+                        <span>发芽</span>
+                        <span>长叶</span>
+                        <span>花苞</span>
+                        <span>开花</span>
+                        <span>茂盛</span>
+                    </div>
+                </div>
+
+                <button class="secondary-btn" onclick="app.continueFocus()">继续专注 🌱</button>
+                <button class="danger-btn" onclick="app.deleteFlower()">删除花朵 🗑️</button>
+            </div>
+        </div>
+
+        <!-- 成就屏幕 -->
+        <div id="achievements-screen" class="screen">
+            <header class="app-header">
+                <button class="back-btn" onclick="app.showScreen('home-screen')">←</button>
+                <h2>成就系统</h2>
+                <div class="header-right"></div>
+            </header>
+
+            <div class="achievements-list" id="achievements-list">
+                <!-- 成就列表会动态插入这里 -->
+            </div>
+        </div>
+
+        <!-- 统计屏幕 -->
+        <div id="stats-screen" class="screen">
+            <header class="app-header">
+                <button class="back-btn" onclick="app.showScreen('home-screen')">←</button>
+                <h2>专注统计</h2>
+                <div class="header-right"></div>
+            </header>
+
+            <div class="stats-content">
+                <div class="stats-card">
+                    <h3>今日专注</h3>
+                    <div class="big-number" id="today-focus">0 分钟</div>
+                </div>
+                <div class="stats-card">
+                    <h3>本周专注</h3>
+                    <div class="big-number" id="week-focus">0 分钟</div>
+                </div>
+                <div class="stats-card">
+                    <h3>总专注时长</h3>
+                    <div class="big-number" id="total-focus">0 小时</div>
+                </div>
+                <div class="stats-card">
+                    <h3>养花数量</h3>
+                    <div class="big-number" id="total-flowers-stats">0 朵</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 设置屏幕 -->
+        <div id="settings-screen" class="screen">
+            <header class="app-header">
+                <button class="back-btn" onclick="app.showScreen('home-screen')">←</button>
+                <h2>设置</h2>
+                <div class="header-right"></div>
+            </header>
+
+            <div class="settings-content">
+                <div class="setting-group">
+                    <h3>城市设置</h3>
+                    <div class="setting-item">
+                        <label>当前城市</label>
+                        <input type="text" id="city-input" placeholder="输入城市名称" value="北京">
+                        <button class="small-btn" onclick="app.saveCity()">保存</button>
+                    </div>
+                    <div class="weather-display" id="weather-display">
+                        <span class="weather-icon">☀️</span>
+                        <span class="weather-text">晴天 生长 +10%</span>
+                    </div>
+                </div>
+
+                <div class="setting-group">
+                    <h3>默认专注时长</h3>
+                    <div class="setting-item">
+                        <label>分钟数</label>
+                        <input type="number" id="default-focus-time" value="25" min="1" max="180">
+                        <button class="small-btn" onclick="app.saveDefaultFocusTime()">保存</button>
+                    </div>
+                </div>
+
+                <div class="setting-group">
+                    <h3>白噪音</h3>
+                    <div class="sound-options">
+                        <button class="sound-btn" onclick="app.playSound('rain')">🌧️ 雨声</button>
+                        <button class="sound-btn" onclick="app.playSound('wind')">🌬️ 风声</button>
+                        <button class="sound-btn" onclick="app.playSound('bird')">🐦 鸟鸣</button>
+                        <button class="sound-btn" onclick="app.playSound('stream')">🏞️ 溪流</button>
+                        <button class="sound-btn" onclick="app.stopSound()">🔇 静音</button>
+                    </div>
+                </div>
+
+                <div class="setting-group">
+                    <h3>关于</h3>
+                    <div class="about-info">
+                        <p><strong>心流花园</strong></p>
+                        <p>版本：v0.0.1</p>
+                        <p>专注时光，心流相伴</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 底部导航栏 -->
+        <nav class="bottom-nav" id="bottom-nav">
+            <button class="nav-btn active" data-screen="home-screen" onclick="app.showScreen('home-screen')">
+                <span class="nav-icon">🏡</span>
+                <span class="nav-text">花园</span>
+            </button>
+            <button class="nav-btn" data-screen="achievements-screen" onclick="app.showScreen('achievements-screen')">
+                <span class="nav-icon">🏆</span>
+                <span class="nav-text">成就</span>
+            </button>
+            <button class="nav-btn" data-screen="stats-screen" onclick="app.showScreen('stats-screen')">
+                <span class="nav-icon">📊</span>
+                <span class="nav-text">统计</span>
+            </button>
+            <button class="nav-btn" data-screen="settings-screen" onclick="app.showScreen('settings-screen')">
+                <span class="nav-icon">⚙️</span>
+                <span class="nav-text">设置</span>
+            </button>
+        </nav>
+    </div>
+
+    <script src="js/flowers.js"></script>
+    <script src="js/weather.js"></script>
+    <script src="js/achievements.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,243 @@
+/* css/flowers.css - 花卉相关样式 */
+
+/* 花卉生长阶段样式 */
+
+/* 种子阶段 */
+.flower-stage-0 {
+    filter: grayscale(50%);
+    transform: scale(0.8);
+}
+
+/* 发芽阶段 */
+.flower-stage-1 {
+    filter: hue-rotate(30deg);
+    transform: scale(0.9);
+}
+
+/* 长叶阶段 */
+.flower-stage-2 {
+    filter: hue-rotate(60deg) saturate(1.2);
+    transform: scale(1);
+}
+
+/* 花苞阶段 */
+.flower-stage-3 {
+    filter: saturate(1.3);
+    transform: scale(1.05);
+    animation: budPulse 2s infinite;
+}
+
+/* 开花阶段 */
+.flower-stage-4 {
+    filter: saturate(1.5) brightness(1.1);
+    transform: scale(1.1);
+    animation: bloomPulse 3s infinite;
+}
+
+/* 茂盛阶段 */
+.flower-stage-5 {
+    filter: saturate(1.8) brightness(1.2);
+    transform: scale(1.15);
+    animation: lushWave 4s infinite;
+}
+
+/* 花卉动画 */
+@keyframes budPulse {
+    0%, 100% {
+        transform: scale(1.05);
+    }
+    50% {
+        transform: scale(1.08);
+    }
+}
+
+@keyframes bloomPulse {
+    0%, 100% {
+        transform: scale(1.1);
+    }
+    50% {
+        transform: scale(1.15);
+    }
+}
+
+@keyframes lushWave {
+    0%, 100% {
+        transform: scale(1.15) rotate(0deg);
+    }
+    25% {
+        transform: scale(1.18) rotate(1deg);
+    }
+    75% {
+        transform: scale(1.18) rotate(-1deg);
+    }
+}
+
+/* 花园中的花卉卡片悬停效果 */
+.flower-card:hover .flower-card-icon {
+    animation: cardBounce 0.5s ease-out;
+}
+
+@keyframes cardBounce {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.2);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+/* 专注屏幕花卉动画 */
+.focus-flower.growing {
+    animation: growPulse 2s infinite;
+}
+
+@keyframes growPulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.08);
+    }
+}
+
+/* 天气效果 */
+.weather-rainy .focus-flower {
+    animation: rainBounce 1s infinite;
+}
+
+@keyframes rainBounce {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-5px);
+    }
+}
+
+.weather-sunny .focus-flower {
+    filter: brightness(1.2) saturate(1.3);
+}
+
+.weather-cloudy .focus-flower {
+    filter: brightness(0.9) saturate(0.9);
+}
+
+/* 生长进度条颜色变化 */
+.progress-fill.stage-0 {
+    background: linear-gradient(90deg, #8B7355, #A0896C);
+}
+
+.progress-fill.stage-1 {
+    background: linear-gradient(90deg, #90EE90, #98FB98);
+}
+
+.progress-fill.stage-2 {
+    background: linear-gradient(90deg, #228B22, #32CD32);
+}
+
+.progress-fill.stage-3 {
+    background: linear-gradient(90deg, #FFB6C1, #FF69B4);
+}
+
+.progress-fill.stage-4 {
+    background: linear-gradient(90deg, #FF6347, #FF4500);
+}
+
+.progress-fill.stage-5 {
+    background: linear-gradient(90deg, #FFD700, #FFA500);
+}
+
+/* 花卉选择界面 */
+.flower-option {
+    background: var(--card-color);
+    border-radius: 20px;
+    padding: 30px 20px;
+    text-align: center;
+    box-shadow: var(--shadow);
+    cursor: pointer;
+    transition: all 0.3s;
+    border: 3px solid transparent;
+}
+
+.flower-option:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-lg);
+    border-color: var(--primary-color);
+}
+
+.flower-option.selected {
+    border-color: var(--primary-color);
+    background: linear-gradient(135deg, var(--card-color), rgba(255, 107, 107, 0.1));
+}
+
+.flower-option-icon {
+    font-size: 60px;
+    display: block;
+    margin-bottom: 10px;
+    transition: transform 0.3s;
+}
+
+.flower-option:hover .flower-option-icon {
+    transform: scale(1.2);
+}
+
+.flower-option-name {
+    display: block;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.flower-option-desc {
+    display: block;
+    font-size: 12px;
+    color: var(--text-secondary);
+    margin-top: 5px;
+}
+
+/* 花卉详情页 */
+.detail-flower-display {
+    font-size: 120px;
+    text-align: center;
+    margin: 30px 0;
+    animation: detailFlowerFloat 4s infinite ease-in-out;
+}
+
+@keyframes detailFlowerFloat {
+    0%, 100% {
+        transform: translateY(0) rotate(0deg);
+    }
+    25% {
+        transform: translateY(-10px) rotate(1deg);
+    }
+    75% {
+        transform: translateY(-10px) rotate(-1deg);
+    }
+}
+
+/* 生长阶段标签 */
+.growth-stage-label {
+    margin-top: 20px;
+    font-size: 18px;
+    color: var(--text-secondary);
+    font-weight: 600;
+    padding: 10px 20px;
+    background: var(--card-color);
+    border-radius: 20px;
+    box-shadow: var(--shadow);
+    display: inline-block;
+}
+
+/* 响应式调整 */
+@media (max-width: 480px) {
+    .detail-flower-display {
+        font-size: 80px;
+    }
+    
+    .focus-flower {
+        font-size: 80px;
+    }
+}

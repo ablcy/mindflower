@@ -1,0 +1,27 @@
+{
+  "name": "心流花园",
+  "short_name": "心流",
+  "description": "专注时光，心流相伴",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#F7F7F7",
+  "theme_color": "#FF6B6B",
+  "orientation": "portrait",
+  "scope": "./",
+  "icons": [
+    {
+      "src": "assets/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "assets/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "categories": ["utility", "lifestyle", "productivity"],
+  "screenshots": [],
+  "features": [],
+  "version": "0.0.1"
+}

@@ -1,9 +1,12 @@
-name: Build Android APK
+name: Build and Release Android APK
 
 on:
   push:
     branches: [ main ]
   workflow_dispatch:  # 允许手动触发
+
+permissions:
+  contents: write    # 需要写权限来创建 Release
 
 jobs:
   build:
@@ -28,8 +31,31 @@ jobs:
       run: cordova build android --debug
       working-directory: ./
     
-    - name: Upload APK artifact
-      uses: actions/upload-artifact@v4
+    - name: Rename APK
+      run: |
+        cp platforms/android/app/build/outputs/apk/debug/app-debug.apk mindflower-debug.apk
+    
+    - name: Delete existing release (if any)
+      continue-on-error: true
+      run: |
+        gh release delete latest --yes || true
+        git push origin :refs/tags/latest || true
+      env:
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    
+    - name: Create Release and Upload APK
+      uses: softprops/action-gh-release@v2
       with:
-        name: 心流花园-DEBUG.APK
-        path: platforms/android/app/build/outputs/apk/debug/app-debug.apk
+        tag_name: latest
+        name: 心流花园 最新版
+        body: |
+          🌸 心流花园 (MindFlower) 最新 APK 构建版本
+          
+          **下载后直接在安卓手机上安装即可使用！**
+          
+          > 此版本由 GitHub Actions 自动构建，每次推送代码到 main 分支时自动更新。
+        files: mindflower-debug.apk
+        draft: false
+        prerelease: false
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

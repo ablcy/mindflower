@@ -1,95 +1,75 @@
 // js/flowers.js - 花卉数据和逻辑
 
 const FlowerManager = {
-    // 花卉数据库
+    // 花卉数据库（不再使用emoji，改用SVG水墨手绘风格）
     flowerTypes: [
         {
             id: 'sunflower',
             name: '向日葵',
-            icon: '🌻',
             description: '向着阳光生长',
-            growthStages: ['🌱', '🌿', '🍃', '🌼', '🌻', '🌻'],
             growthTime: [10, 20, 20, 20, 30], // 每个阶段需要的时间（分钟）
             bonus: { sunny: 1.2, rainy: 1.0, cloudy: 1.0 }
         },
         {
             id: 'rose',
             name: '玫瑰',
-            icon: '🌹',
             description: '爱之花朵',
-            growthStages: ['🌱', '🌿', '🍃', '🌺', '🌹', '🌹'],
             growthTime: [15, 25, 20, 25, 35],
             bonus: { sunny: 1.0, rainy: 1.3, cloudy: 1.0 }
         },
         {
             id: 'chrysanthemum',
             name: '菊花',
-            icon: '🌼',
             description: '秋日之花',
-            growthStages: ['🌱', '🌿', '🍃', '🌾', '🌼', '🌼'],
             growthTime: [10, 20, 20, 20, 30],
             bonus: { sunny: 1.0, rainy: 1.2, cloudy: 1.1 }
         },
         {
             id: 'lotus',
             name: '荷花',
-            icon: '🪷',
             description: '出淤泥而不染',
-            growthStages: ['🌱', '🌿', '🍃', '🪻', '🪷', '🪷'],
             growthTime: [20, 30, 25, 30, 40],
             bonus: { sunny: 1.1, rainy: 1.5, cloudy: 1.0 }
         },
         {
             id: 'tulip',
             name: '郁金香',
-            icon: '🌷',
             description: '荷兰国花',
-            growthStages: ['🌱', '🌿', '🍃', '🌱', '🌷', '🌷'],
             growthTime: [10, 18, 18, 18, 25],
             bonus: { sunny: 1.3, rainy: 1.0, cloudy: 1.0 }
         },
         {
             id: 'peony',
             name: '牡丹',
-            icon: '🌸',
             description: '花中之王',
-            growthStages: ['🌱', '🌿', '🍃', '🌺', '🌸', '🌸'],
             growthTime: [20, 30, 25, 30, 45],
             bonus: { sunny: 1.2, rainy: 1.2, cloudy: 1.0 }
         },
         {
             id: 'jasmine',
             name: '茉莉花',
-            icon: '🌺',
             description: '芬芳迷人',
-            growthStages: ['🌱', '🌿', '🍃', '🌾', '🌺', '🌺'],
             growthTime: [10, 20, 15, 20, 25],
             bonus: { sunny: 1.0, rainy: 1.4, cloudy: 1.1 }
         },
         {
             id: 'azalea',
             name: '杜鹃花',
-            icon: '🌺',
             description: '映山红',
-            growthStages: ['🌱', '🌿', '🍃', '🌺', '🌺', '🌺'],
             growthTime: [12, 22, 20, 22, 32],
             bonus: { sunny: 1.1, rainy: 1.2, cloudy: 1.0 }
         },
         {
             id: 'lavender',
             name: '薰衣草',
-            icon: '🌾',
             description: '紫色浪漫',
-            growthStages: ['🌱', '🌿', '🍃', '🌾', '🌾', '🌾'],
             growthTime: [15, 25, 20, 25, 35],
             bonus: { sunny: 1.2, rainy: 1.1, cloudy: 1.0 }
         },
         {
             id: 'orchid',
             name: '兰花',
-            icon: '🌸',
             description: '花中君子',
-            growthStages: ['🌱', '🌿', '🍃', '🌼', '🌸', '🌸'],
             growthTime: [18, 28, 22, 28, 40],
             bonus: { sunny: 1.0, rainy: 1.3, cloudy: 1.2 }
         }
@@ -154,11 +134,16 @@ const FlowerManager = {
         return updatedFlower;
     },
 
-    // 获取当前生长图标
-    getCurrentIcon(flower) {
-        const flowerType = this.getFlowerTypeById(flower.typeId);
-        if (!flowerType) return '🌱';
-        return flowerType.growthStages[flower.currentStage];
+    // 获取当前生长图标（水墨SVG版）
+    getCurrentIcon(flower, size = 80) {
+        if (!InkWashFlowers) return '🌱';
+        return InkWashFlowers.createFlowerSVG(flower.typeId, flower.currentStage, size);
+    },
+    
+    // 获取小型图标SVG（用于列表显示）
+    getSmallIcon(flower, size = 40) {
+        if (!InkWashFlowers) return '🌱';
+        return InkWashFlowers.createFlowerSVG(flower.typeId, flower.currentStage, size);
     },
 
     // 获取生长阶段名称

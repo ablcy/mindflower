@@ -13,6 +13,12 @@ const App = {
     init() {
         console.log('初始化应用...');
         
+        // 启动画面渲染水墨花卉
+        const splashFlower = document.getElementById('splash-flower-svg');
+        if (splashFlower && InkWashFlowers) {
+            splashFlower.innerHTML = InkWashFlowers.createFlowerSVG('sunflower', 0, 100);
+        }
+        
         // 加载数据
         this.loadData();
         
@@ -176,7 +182,7 @@ const App = {
         
         return `
             <div class="flower-card flower-stage-${flower.currentStage}" onclick="app.openFlowerDetail('${flower.id}')">
-                <span class="flower-card-icon">${icon}</span>
+                <div class="flower-card-icon">${icon}</div>
                 <span class="flower-card-name">${flower.name}</span>
                 <span class="flower-card-stage">${stageName}</span>
                 <div class="flower-card-progress">
@@ -193,13 +199,16 @@ const App = {
         
         const flowerTypes = FlowerManager.getAllFlowerTypes();
         
-        flowerList.innerHTML = flowerTypes.map(type => `
-            <div class="flower-option" onclick="app.selectFlower('${type.id}')">
-                <span class="flower-option-icon">${type.icon}</span>
-                <span class="flower-option-name">${type.name}</span>
-                <span class="flower-option-desc">${type.description}</span>
-            </div>
-        `).join('');
+        flowerList.innerHTML = flowerTypes.map(type => {
+            const svgIcon = InkWashFlowers ? InkWashFlowers.createFlowerSVG(type.id, 0, 50) : '🌱';
+            return `
+                <div class="flower-option" onclick="app.selectFlower('${type.id}')">
+                    <div class="flower-option-icon">${svgIcon}</div>
+                    <span class="flower-option-name">${type.name}</span>
+                    <span class="flower-option-desc">${type.description}</span>
+                </div>
+            `;
+        }).join('');
     },
     
     // 选择花卉
@@ -224,7 +233,7 @@ const App = {
         const timerSeconds = document.getElementById('timer-seconds');
         
         if (focusFlower) {
-            focusFlower.textContent = FlowerManager.getCurrentIcon(flower);
+            focusFlower.innerHTML = FlowerManager.getCurrentIcon(flower);
             focusFlower.classList.remove('growing');
         }
         
@@ -357,14 +366,11 @@ const App = {
         const growthStageLabel = document.getElementById('growth-stage-label');
         
         if (focusFlower) {
-            const oldIcon = focusFlower.textContent;
             const newIcon = FlowerManager.getCurrentIcon(updatedFlower);
             
-            if (oldIcon !== newIcon) {
-                focusFlower.textContent = newIcon;
-                focusFlower.classList.add('flower-grow');
-                setTimeout(() => focusFlower.classList.remove('flower-grow'), 800);
-            }
+            focusFlower.innerHTML = newIcon;
+            focusFlower.classList.add('flower-grow');
+            setTimeout(() => focusFlower.classList.remove('flower-grow'), 800);
             
             // 更新阶段样式
             focusFlower.className = `focus-flower growing flower-stage-${updatedFlower.currentStage}`;
